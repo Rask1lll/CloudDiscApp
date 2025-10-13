@@ -11,8 +11,8 @@ export default function Home() {
       >
         <h1 className="text-center text-2xl">Вход на платформу</h1>
 
-        <div className="px-2">
-          <label htmlFor="email" className="block">
+        <div className="px-2 flex flex-col gap-2">
+          <label htmlFor="password" className="block text-xl">
             Логин
           </label>
           <input
@@ -22,8 +22,8 @@ export default function Home() {
             className="outline-0 p-2 ring-1 rounded-xl w-full ring-gray-400 bg-white"
           />
         </div>
-        <div className="px-2">
-          <label htmlFor="password" className="block">
+        <div className="px-2 flex flex-col gap-2">
+          <label htmlFor="password" className="block text-xl">
             Пароль
           </label>
           <div className="p-2 ring-1 flex rounded-xl w-full ring-gray-400 bg-white">
@@ -50,7 +50,7 @@ export default function Home() {
             )}
           </div>
         </div>
-        <button className="p-3 px-6 rounded-2xl ring-1 ring-[#50505053] bg-[#aeecfa32]">
+        <button className="p-3 px-6 rounded-2xl ring-1 ring-[#50505053] bg-[#aeecfa32] hover:bg-[#dff5fa32] hover:cursor-pointer transition-all duration-300">
           Вход
         </button>
       </form>
