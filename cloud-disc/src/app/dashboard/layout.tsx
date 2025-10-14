@@ -1,10 +1,17 @@
+import Alert from "@/components/alert/Alert";
+import Header from "@/components/Header/Header";
+import ModalWindow from "@/components/modalPage/ModalWindow";
 import { ReactNode } from "react";
 
 export default function DashboardLayout({ children }: { children: ReactNode }) {
   return (
-    <div className="w-dvw h-dhw p-2">
-      <div></div>
-      <div>{children}</div>
+    <div className="w-dvw h-dvh flex bg-gradient-to-br from-slate-100 to-blue-100 flex-col p-2 py-4  gap-2">
+      <Alert />
+      <ModalWindow />
+      <div className=" h-[10%]">
+        <Header />
+      </div>
+      <div className="h-[90%]">{children}</div>
     </div>
   );
 }
