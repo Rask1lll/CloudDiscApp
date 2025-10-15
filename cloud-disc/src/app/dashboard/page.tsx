@@ -8,25 +8,25 @@ export default function DashboardPage() {
       <section className=" flex flex-col bg-white h-[100%] overflow-y-auto rounded-xl">
         <File
           type="audio"
-          name="ALEm salem"
+          name="example.audio"
           createDate="20-12-2001"
           size="210mb"
         ></File>
         <File
           type="video"
-          name="ALEm salem"
+          name="example.mp3"
           createDate="20-12-2001"
           size="210mb"
         ></File>
         <File
-          type="package"
-          name="ALEm  salemsalem"
+          type="folder"
+          name="example package"
           createDate="20-12-2001"
           size="210mb"
         ></File>
         <File
-          type="audio"
-          name="ALEm salemsalemsalemsalemsalemsalemsalemsalemsalem"
+          type="file"
+          name="example.txt"
           createDate="20-12-2001"
           size="210mb"
         ></File>

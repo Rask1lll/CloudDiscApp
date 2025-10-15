@@ -1,4 +1,5 @@
 "use client";
+import Link from "next/link";
 import { useState } from "react";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
 export default function Home() {
@@ -50,9 +51,11 @@ export default function Home() {
             )}
           </div>
         </div>
-        <button className="p-3 px-6 rounded-2xl ring-1 ring-[#50505053] bg-[#aeecfa32] hover:bg-[#dff5fa32] hover:cursor-pointer transition-all duration-300">
-          Вход
-        </button>
+        <Link className="w-full" href={"/dashboard"}>
+          <button className="p-3 px-6 rounded-2xl ring-1 w-full ring-[#50505053] bg-[#aeecfa32] hover:bg-[#dff5fa32] hover:cursor-pointer transition-all duration-300">
+            Вход
+          </button>
+        </Link>
       </form>
     </div>
   );

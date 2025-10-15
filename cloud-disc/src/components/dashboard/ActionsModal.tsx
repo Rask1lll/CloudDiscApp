@@ -20,7 +20,7 @@ export default function ActionsModal({
   }, [mouseInComponent]);
   return (
     <div
-      className="absolute top-[150%] bg-white ring-1 z-20 rounded-md ring-gray-300 right-0"
+      className="absolute top-[150%] bg-white ring-1 z-10 rounded-md ring-gray-300 right-0"
       onMouseEnter={() => {
         setMouseInComponent(true);
       }}

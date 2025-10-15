@@ -5,13 +5,15 @@ import { ReactNode } from "react";
 
 export default function DashboardLayout({ children }: { children: ReactNode }) {
   return (
-    <div className="w-dvw h-dvh flex bg-gradient-to-br from-slate-100 to-blue-100 flex-col p-2 py-4  gap-2">
-      <Alert />
+    <div>
       <ModalWindow />
-      <div className=" h-[10%]">
-        <Header />
+      <div className="w-dvw h-dvh flex bg-gradient-to-br from-slate-100 to-blue-100 flex-col p-2 py-4  gap-2">
+        <Alert />
+        <div className=" h-[10%]">
+          <Header />
+        </div>
+        <div className="h-[90%]">{children}</div>
       </div>
-      <div className="h-[90%]">{children}</div>
     </div>
   );
 }
