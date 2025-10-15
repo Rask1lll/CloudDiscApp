@@ -6,7 +6,7 @@ export default function UploadFileModalWindow() {
   const [files, setFiles] = useState<FileList | null>();
   const [filesCount, setFilesCount] = useState<number>(0);
   const inputRef = useRef<HTMLInputElement | null>(null);
-  const [fileNames, setFileNames] = useState<[string]>();
+  const [fileNames, setFileNames] = useState<string[]>([]);
 
   const addInputToFiles = function (filesToAdd: FileList) {
     for (let index = 0; index < filesToAdd.length; index++) {
