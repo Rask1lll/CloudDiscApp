@@ -1,7 +1,5 @@
 "use client";
-import { Component, useRef, useState } from "react";
-import { BiFolder } from "react-icons/bi";
-import { FaFolderPlus } from "react-icons/fa";
+import { useRef, useState } from "react";
 import { HiDocumentAdd, HiFolderAdd } from "react-icons/hi";
 import { MdOutlineAddBox } from "react-icons/md";
 

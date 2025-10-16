@@ -75,9 +75,14 @@ export default function UploadFileModalWindow() {
             );
           })}
       </div>
-      <button className="p-4 w-full bg-blue-300 rounded-2xl mt-5">
-        Загрузить файлы
-      </button>
+      <div className="flex gap-2  mt-3">
+        <button className="p-4 text-base hover:bg-red-200  transition-colors duration-200 py-3 flex-1 bg-red-100 rounded-2xl">
+          Отмена
+        </button>
+        <button className="p-4 py-2 hover:bg-blue-200  transition-colors duration-200 text-base flex-1 bg-blue-100 rounded-2xl">
+          Загрузить
+        </button>
+      </div>
     </div>
   );
 }

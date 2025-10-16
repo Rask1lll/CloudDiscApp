@@ -2,7 +2,6 @@ import Alert from "@/components/alert/Alert";
 import Header from "@/components/Header/Header";
 import ModalWindow from "@/components/modalPage/ModalWindow";
 import { ReactNode } from "react";
-
 export default function DashboardLayout({ children }: { children: ReactNode }) {
   return (
     <div>

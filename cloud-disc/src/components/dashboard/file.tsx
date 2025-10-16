@@ -4,6 +4,9 @@ import { AiOutlineAudio, AiOutlineFolder } from "react-icons/ai";
 import { BsThreeDots } from "react-icons/bs";
 import { HiOutlineDocument, HiOutlineVideoCamera } from "react-icons/hi";
 import ActionsModal from "./ActionsModal";
+import { useModalStore } from "@/store/modalStore";
+import AudioFileModalWindow from "../modalPage/AudioFileModalWindow";
+import VideoFileModalWindow from "../modalPage/VideoFileModalWindow";
 export default function File({
   type,
   name,
@@ -15,6 +18,7 @@ export default function File({
   createDate: string;
   size: string;
 }) {
+  const { setModalContent } = useModalStore();
   const [actionsOpen, setActionsOpen] = useState<Boolean>(false);
   const IconType = () => {
     switch (type) {
@@ -31,9 +35,25 @@ export default function File({
     }
   };
 
+  const ModalType = () => {
+    switch (type) {
+      case "video":
+        return <VideoFileModalWindow name={name} />;
+      case "audio":
+        return <AudioFileModalWindow name={name} />;
+      default:
+        return <HiOutlineDocument className="h-5 w-5" />;
+    }
+  };
+
   return (
     <div className=" w-full hover:cursor-pointer hover:bg-gray-50 p-4 not-last:border-b border-gray-100 transition-all duration-500  flex items-center justify-between gap-3 ">
-      <div className="flex gap-2 items-center w-[50%] not-sm:w-[100%] whitespace-nowrap">
+      <div
+        onClick={() => {
+          setModalContent(ModalType());
+        }}
+        className="flex gap-2 items-center w-[50%] not-sm:w-[100%] whitespace-nowrap"
+      >
         {IconType()}{" "}
         <h3 className="font-medium text-gray-900 overflow-ellipsis  line-clamp-1 md:line-clamp-2 max-w-[70%]">
           {name}
