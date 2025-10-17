@@ -1,6 +1,14 @@
+"use client";
+import { useRef } from "react";
 import { BiFolderPlus } from "react-icons/bi";
 
 export default function FolderCreateModalWindow() {
+  const inputRef = useRef<null | HTMLInputElement>(null);
+
+  function createFolder() {
+    const folderName = inputRef.current?.value;
+    console.log(folderName);
+  }
   return (
     <div className="bg-opacity-50">
       <div className="bg-white rounded-2xl max-w-md w-full p-6 shadow-2xl">
@@ -22,6 +30,7 @@ export default function FolderCreateModalWindow() {
               type="text"
               className="w-full p-4 ring-1 ring-gray-400 rounded-md"
               placeholder="Название Папки "
+              ref={inputRef}
             />
           </div>
 
@@ -30,6 +39,7 @@ export default function FolderCreateModalWindow() {
               Отмена
             </button>
             <button
+              onClick={createFolder}
               className={`flex-1 px-6 py-3 rounded-xl hover:bg-blue-400 duration-200 cursor-pointer font-medium transition-all`}
             >
               Создать

@@ -4,12 +4,13 @@ import { HiDocumentAdd, HiFolderAdd } from "react-icons/hi";
 import { MdOutlineAddBox } from "react-icons/md";
 
 export default function AddFileBtn() {
-  const iconRef = useRef(null);
+  const iconRef = useRef<HTMLDivElement | null>(null);
   const [opened, setOpened] = useState<boolean>(false);
 
   function rotateIcon() {
     if (iconRef.current) {
-      iconRef.current.classList.toggle("rotate-90");
+      if (iconRef.current.classList)
+        iconRef.current.classList.toggle("rotate-90");
     }
   }
   return (

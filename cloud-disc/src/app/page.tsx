@@ -1,9 +1,11 @@
 "use client";
+import { useUserStore } from "@/store/userStore";
 import Link from "next/link";
 import { useState } from "react";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
 export default function Home() {
   const [passwordIsVisible, setPasswordIsVisible] = useState<boolean>(false);
+  const { setStatus } = useUserStore();
   return (
     <div className="w-dvw h-dvh flex justify-center font-semibold items-center">
       <form
@@ -51,8 +53,13 @@ export default function Home() {
             )}
           </div>
         </div>
-        <Link className="w-full" href={"/dashboard"}>
-          <button className="p-3 px-6 rounded-2xl ring-1 w-full ring-[#50505053] bg-[#aeecfa32] hover:bg-[#dff5fa32] hover:cursor-pointer transition-all duration-300">
+        <Link className="w-full" href={"/dashboard/1"}>
+          <button
+            onClick={() => {
+              setStatus("admin");
+            }}
+            className="p-3 px-6 rounded-2xl ring-1 w-full ring-[#50505053] bg-[#aeecfa32] hover:bg-[#dff5fa32] hover:cursor-pointer transition-all duration-300"
+          >
             Вход
           </button>
         </Link>
