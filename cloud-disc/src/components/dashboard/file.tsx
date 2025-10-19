@@ -15,6 +15,7 @@ import { useUserStore } from "@/store/userStore";
 import { IoImageOutline } from "react-icons/io5";
 import FileModalWindow from "../modalPage/FileModalWindow";
 import ImageFileModalWindow from "../modalPage/ImageFileModalWindow";
+
 export default function File({
   fileId,
   type,
@@ -28,13 +29,14 @@ export default function File({
   type: string;
   name: string;
   createDate: Date;
-  size: string;
+  size: number | string;
   updateAt: Date;
   fileToken: string;
 }) {
   const { setModalContent } = useModalStore();
   const { status } = useUserStore();
   const [actionsOpen, setActionsOpen] = useState<Boolean>(false);
+
   const IconType = () => {
     if (type.includes("video"))
       return <HiOutlineVideoCamera className="h-5 text-orange-400 w-5" />;
@@ -57,12 +59,24 @@ export default function File({
       return <VideoFileModalWindow name={name} fileToken={fileToken} />;
     switch (type) {
       case "audio":
-        <AudioFileModalWindow name={name} fileToken={fileToken} />;
+        return <AudioFileModalWindow name={name} fileToken={fileToken} />;
       case "image":
-        <ImageFileModalWindow name={name} link="" />;
+        return <ImageFileModalWindow name={name} link="" />;
       default:
         return <FileModalWindow name={name} type={type} />;
     }
+  };
+
+  // функция для форматирования размера
+  const formatSize = (bytes: number | string) => {
+    const b = typeof bytes === "string" ? parseInt(bytes) : bytes;
+    if (b < 1024) return b + " B";
+    const kb = b / 1024;
+    if (kb < 1024) return kb.toFixed(2) + " KB";
+    const mb = kb / 1024;
+    if (mb < 1024) return mb.toFixed(2) + " MB";
+    const gb = mb / 1024;
+    return gb.toFixed(2) + " GB";
   };
 
   return (
@@ -70,14 +84,14 @@ export default function File({
       onClick={() => {
         setModalContent(ModalType());
       }}
-      className=" w-full hover:cursor-pointer hover:bg-gray-50 p-4 not-last:border-b border-gray-100 transition-all duration-500  flex items-center justify-between gap-3 "
+      className="w-full hover:cursor-pointer hover:bg-gray-50 p-4 not-last:border-b border-gray-100 transition-all duration-500 flex items-center justify-between gap-3"
     >
       <div className="flex gap-2 items-center w-[40%] not-md:w-[100%] whitespace-nowrap">
         <div className="w-[5%]">{IconType()} </div>
-        <h3 className="font-medium text-gray-900 overflow-ellipsis  line-clamp-1 md:line-clamp-2 not-md:w-[75%] w-[95%]">
+        <h3 className="font-medium text-gray-900 overflow-ellipsis line-clamp-1 md:line-clamp-2 not-md:w-[75%] w-[95%]">
           {name}
           <div className="flex gap-2 text-sm md:hidden text-gray-500">
-            <span>{size}</span>
+            <span className="text-nowrap">{formatSize(size)}</span>
             <span>{createDate.toLocaleDateString("ru-RU")}</span>
           </div>
         </h3>
@@ -97,16 +111,15 @@ export default function File({
         <div
           className={`flex not-md:hidden w-[60%] ${
             status && "w-[%]"
-          } gap-20  text-gray-500`}
+          } gap-20 text-gray-500`}
         >
-          <span className={`w-[60px] not-md:hidden`}>{size}</span>
+          <span className={`w-[70px] not-md:hidden`}>{formatSize(size)}</span>
           <span className="not-md:hidden">
             {createDate.toLocaleDateString("ru-RU")}
           </span>
-          {/* <span className="">{updateAt.toLocaleDateString("ru-RU")}</span> */}
         </div>
         {status && (
-          <div className="flex gap-2 items-center relative ">
+          <div className="flex gap-2 items-center relative">
             <BsThreeDots
               onClick={(e) => {
                 e.stopPropagation();

@@ -52,6 +52,7 @@ export default function UploadFileModalWindow() {
     const token = localStorage.getItem("access");
     const API_URL = process.env.NEXT_PUBLIC_API_URL;
     const now = new Date();
+    let filetoken;
 
     if (!token) {
       alert("Вы не авторизованы!");
