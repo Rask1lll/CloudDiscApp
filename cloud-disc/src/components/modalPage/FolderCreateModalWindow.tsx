@@ -1,12 +1,13 @@
 "use client";
 import { useFileStore } from "@/store/fileStore";
+import { useModalStore } from "@/store/modalStore";
 import { useRef } from "react";
 import { BiFolderPlus } from "react-icons/bi";
 
 export default function FolderCreateModalWindow() {
   const inputRef = useRef<null | HTMLInputElement>(null);
   const { addFile, currentFolderUUID } = useFileStore();
-  console.log(currentFolderUUID);
+  const { clearModalContent } = useModalStore();
 
   async function createFolder() {
     const folderName = inputRef.current?.value;
@@ -30,6 +31,8 @@ export default function FolderCreateModalWindow() {
       const err = await res.json();
       throw new Error(err.message || "Ошибка создания папки");
     }
+
+    const fullRes = await res.json();
     addFile({
       type: "folder",
       name: folderName,
@@ -38,9 +41,10 @@ export default function FolderCreateModalWindow() {
       createAt: new Date(),
       id: folderName,
       size: "",
-      token: "",
+      token: fullRes.token,
     });
-    console.log(await res.json());
+
+    clearModalContent();
   }
 
   return (
