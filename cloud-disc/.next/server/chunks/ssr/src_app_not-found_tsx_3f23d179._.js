@@ -1,0 +1,3 @@
+module.exports=[3363,a=>{"use strict";a.s(["default",()=>d],3363);var b=a.i(7997);function c(){return(0,b.jsxs)("div",{className:"flex flex-col items-center justify-center h-screen text-center",children:[(0,b.jsx)("h1",{className:"text-5xl font-bold mb-4",children:"404 — Страница не найдена"}),(0,b.jsx)("p",{className:"text-gray-500 mb-6",children:"Кажется, ссылка не действительна"}),(0,b.jsx)("a",{href:"/",className:"px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 transition",children:"Вернуться на главную"})]})}function d(){return(0,b.jsx)(c,{})}}];
+
+//# sourceMappingURL=src_app_not-found_tsx_3f23d179._.js.map

@@ -19,11 +19,7 @@ export default function FileModalWindow({
         <AiOutlineFile className="w-24 h-24 text-gray-400" />
         <div className="text-center">
           <div className="space-y-3">
-            <div className="flex space-x-3 justify-center">
-              <button className="bg-gray-100 ring ring-gray-300 text-gray-700 px-6 py-2 rounded-lg font-medium hover:bg-blue-200 transition-colors">
-                Скачать
-              </button>
-            </div>
+            <div className="flex space-x-3 justify-center"></div>
           </div>
         </div>
       </div>
