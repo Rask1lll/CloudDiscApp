@@ -36,15 +36,15 @@ export default function File({
   const { status } = useUserStore();
   const [actionsOpen, setActionsOpen] = useState<Boolean>(false);
   const IconType = () => {
+    if (type.includes("video"))
+      return <HiOutlineVideoCamera className="h-5 text-orange-400 w-5" />;
     switch (type) {
       case "file":
         return <AiOutlineFileText className="h-5 text-green-600 w-5" />;
-      case "video":
-        return <HiOutlineVideoCamera className="h-5 text-orange-400 w-5" />;
       case "audio":
         return <AiOutlineAudio className="h-5 text-sky-600 w-5" />;
       case "folder":
-        return <AiOutlineFolder className="h-5  w-5" />;
+        return <AiOutlineFolder className="h-5 w-5" />;
       case "image":
         return <IoImageOutline className="h-5 text-purple-600 w-5" />;
       default:
@@ -53,13 +53,13 @@ export default function File({
   };
 
   const ModalType = () => {
+    if (type.includes("video"))
+      return <VideoFileModalWindow name={name} fileToken={fileToken} />;
     switch (type) {
-      case "video":
-        return <VideoFileModalWindow name={name} link="/audio.mp3" />;
       case "audio":
-        return <AudioFileModalWindow name={name} fileToken={fileToken} />;
+        <AudioFileModalWindow name={name} fileToken={fileToken} />;
       case "image":
-        return <ImageFileModalWindow name={name} link="/image.jpeg" />;
+        <ImageFileModalWindow name={name} link="" />;
       default:
         return <FileModalWindow name={name} type={type} />;
     }
@@ -74,7 +74,7 @@ export default function File({
     >
       <div className="flex gap-2 items-center w-[40%] not-md:w-[100%] whitespace-nowrap">
         <div className="w-[5%]">{IconType()} </div>
-        <h3 className="font-medium text-gray-900 overflow-ellipsis  line-clamp-1 md:line-clamp-2 w-[95%]">
+        <h3 className="font-medium text-gray-900 overflow-ellipsis  line-clamp-1 md:line-clamp-2 not-md:w-[75%] w-[95%]">
           {name}
           <div className="flex gap-2 text-sm md:hidden text-gray-500">
             <span>{size}</span>

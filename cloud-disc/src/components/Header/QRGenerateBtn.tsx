@@ -8,7 +8,7 @@ export default function QRGenerateBtn() {
     <div>
       <button
         onClick={() => {
-          setModalContent(<QRModalWindow link="w" />);
+          setModalContent(<QRModalWindow />);
         }}
         className="flex items-center gap-1 p-2 ring-1 rounded-xl hover:cursor-pointer hover:bg-purple-50 transition-colors duration-200 ring-gray-200 hover:ring-1"
       >

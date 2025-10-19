@@ -143,7 +143,7 @@ export default function UploadFileModalWindow() {
     const readyResult = allFilesToUpload.map((el) => ({
       id: Date.now().toString() + Math.random().toString(36).slice(2),
       name: el.name,
-      type: el.file_type,
+      type: el.type,
       size: `${(el.size / 1024 / 1024).toFixed(2)} MB`,
       createAt: now,
       updateAt: now,

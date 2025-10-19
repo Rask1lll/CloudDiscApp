@@ -41,7 +41,7 @@ export default function DashboardPage() {
 
       const normalizedFiles = reqResult.files.map((f: any) => ({
         id: f.id,
-        type: f.type,
+        type: f.file_type,
         name: f.name,
         size: f.size ?? "0",
         createAt: new Date(f.created_at),

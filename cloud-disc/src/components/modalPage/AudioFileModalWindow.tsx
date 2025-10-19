@@ -1,4 +1,5 @@
 "use client";
+
 import { AiOutlineAudio } from "react-icons/ai";
 import { useEffect, useState } from "react";
 
@@ -15,6 +16,11 @@ export default function AudioFileModalWindow({
   const [createdAt, setCreatedAt] = useState<string>("");
 
   useEffect(() => {
+    setFileUrl(""); // сбрасываем старый файл при новом открытии
+    setFileName("Загрузка...");
+    setFileSize(null);
+    setCreatedAt("");
+
     const fetchAudio = async () => {
       try {
         const API_URL = process.env.NEXT_PUBLIC_API_URL;
@@ -23,9 +29,7 @@ export default function AudioFileModalWindow({
         const res = await fetch(
           `${API_URL}/storage/api/v3/files/${fileToken}/`,
           {
-            headers: {
-              Authorization: `Bearer ${accessToken}`,
-            },
+            headers: { Authorization: `Bearer ${accessToken}` },
           }
         );
 
@@ -43,8 +47,10 @@ export default function AudioFileModalWindow({
       }
     };
 
-    fetchAudio();
-  }, []);
+    if (fileToken) {
+      fetchAudio();
+    }
+  }, [fileToken]);
 
   const formatSize = (size: number | null) => {
     if (!size) return "";
@@ -61,7 +67,7 @@ export default function AudioFileModalWindow({
       <div className="p-4 flex flex-col gap-3">
         {fileUrl ? (
           <>
-            <audio src={fileUrl} controls className="w-80">
+            <audio key={fileUrl} src={fileUrl} controls className="w-80">
               Ваш браузер не поддерживает воспроизведение аудио
             </audio>
             <div className="text-sm text-gray-500">
