@@ -1,14 +1,48 @@
 "use client";
+import { useFileStore } from "@/store/fileStore";
 import { useRef } from "react";
 import { BiFolderPlus } from "react-icons/bi";
 
 export default function FolderCreateModalWindow() {
   const inputRef = useRef<null | HTMLInputElement>(null);
+  const { addFile, currentFolderUUID } = useFileStore();
+  console.log(currentFolderUUID);
 
-  function createFolder() {
+  async function createFolder() {
     const folderName = inputRef.current?.value;
-    console.log(folderName);
+
+    if (!folderName) return;
+    const token = localStorage.getItem("access");
+
+    const res = await fetch(
+      `${process.env.NEXT_PUBLIC_API_URL}/storage/api/v3/folders/`,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({ name: folderName, parent: currentFolderUUID }),
+      }
+    );
+
+    if (!res.ok) {
+      const err = await res.json();
+      throw new Error(err.message || "Ошибка создания папки");
+    }
+    addFile({
+      type: "folder",
+      name: folderName,
+      parent: null,
+      updateAt: new Date(),
+      createAt: new Date(),
+      id: folderName,
+      size: "",
+      token: "",
+    });
+    console.log(await res.json());
   }
+
   return (
     <div className="bg-opacity-50">
       <div className="bg-white rounded-2xl max-w-md w-full p-6 shadow-2xl">

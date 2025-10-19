@@ -3,6 +3,7 @@ import { useUserStore } from "@/store/userStore";
 import CreateFolderButton from "./CreateFolderButton";
 import Search from "./Search";
 import UploadFileButton from "./UploadFileButton";
+import SortFilesCheckbox from "./SortingSelect";
 
 export default function ListOptions() {
   const { status } = useUserStore();
@@ -10,7 +11,10 @@ export default function ListOptions() {
   return (
     <div className="w-full flex mb-2">
       <div className="flex not-md:flex-col gap-4 w-full">
-        <Search />
+        <div className="flex gap-2 not-sm:flex-col flex-1">
+          <Search />
+          <SortFilesCheckbox />
+        </div>
         {status && (
           <div className="flex gap-2">
             <CreateFolderButton />

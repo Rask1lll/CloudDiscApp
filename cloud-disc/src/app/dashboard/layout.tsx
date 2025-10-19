@@ -1,7 +1,9 @@
 import Alert from "@/components/alert/Alert";
+import AuthProvider from "@/components/authorization/AuthProvider";
 import Header from "@/components/Header/Header";
 import ModalWindow from "@/components/modalPage/ModalWindow";
 import { ReactNode } from "react";
+
 export default function DashboardLayout({ children }: { children: ReactNode }) {
   return (
     <div>
@@ -11,7 +13,9 @@ export default function DashboardLayout({ children }: { children: ReactNode }) {
         <div className=" h-[10%]">
           <Header />
         </div>
-        <div className="h-[90%]">{children}</div>
+        <div className="h-[90%]">
+          <AuthProvider>{children}</AuthProvider>
+        </div>
       </div>
     </div>
   );

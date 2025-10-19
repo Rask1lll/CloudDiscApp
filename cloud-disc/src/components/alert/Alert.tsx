@@ -8,7 +8,7 @@ export default function Alert() {
 
   useEffect(() => {
     if (!alert) return;
-    const timer = setTimeout(() => clearAlert(), 3000);
+    const timer = setTimeout(() => clearAlert(), 3700);
     return () => clearTimeout(timer);
   }, [alert, clearAlert]);
 
@@ -19,11 +19,11 @@ export default function Alert() {
           <MotionConfig>
             <motion.div
               key="alert"
-              initial={{ y: -20, opacity: 0.4 }}
-              animate={{ y: 0, opacity: 1 }}
-              exit={{ y: -20, opacity: 0 }}
+              initial={{ x: -100, opacity: 0.4 }}
+              animate={{ x: 0, opacity: 1 }}
+              exit={{ x: 100, opacity: 0 }}
               transition={{ duration: 0.5, ease: "easeOut" }}
-              className="p-2 bg-[#3cf5f567] font-semibold rounded-md text-gray-700"
+              className="p-2 bg-[#7785ff67] font-semibold rounded-md text-gray-700"
             >
               {alert}
             </motion.div>

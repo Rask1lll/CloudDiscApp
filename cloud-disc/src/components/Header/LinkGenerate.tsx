@@ -5,7 +5,7 @@ import { BsShare } from "react-icons/bs";
 export default function LinkGenerate() {
   const { setAlert } = useAlertStore();
   async function copyLink() {
-    await navigator.clipboard.writeText("http://localhost:3000/dashboard");
+    await navigator.clipboard.writeText(window.location.href);
     setAlert("Ссылка была скопирована");
   }
   return (

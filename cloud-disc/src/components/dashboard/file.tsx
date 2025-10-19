@@ -16,15 +16,21 @@ import { IoImageOutline } from "react-icons/io5";
 import FileModalWindow from "../modalPage/FileModalWindow";
 import ImageFileModalWindow from "../modalPage/ImageFileModalWindow";
 export default function File({
+  fileId,
   type,
   name,
   createDate,
   size,
+  updateAt,
+  fileToken,
 }: {
+  fileId: string;
   type: string;
   name: string;
-  createDate: string;
+  createDate: Date;
   size: string;
+  updateAt: Date;
+  fileToken: string;
 }) {
   const { setModalContent } = useModalStore();
   const { status } = useUserStore();
@@ -51,7 +57,7 @@ export default function File({
       case "video":
         return <VideoFileModalWindow name={name} link="/audio.mp3" />;
       case "audio":
-        return <AudioFileModalWindow name={name} link="/audio.mp3" />;
+        return <AudioFileModalWindow name={name} fileToken={fileToken} />;
       case "image":
         return <ImageFileModalWindow name={name} link="/image.jpeg" />;
       default:
@@ -66,44 +72,58 @@ export default function File({
       }}
       className=" w-full hover:cursor-pointer hover:bg-gray-50 p-4 not-last:border-b border-gray-100 transition-all duration-500  flex items-center justify-between gap-3 "
     >
-      <div className="flex gap-2 items-center w-[50%] not-sm:w-[100%] whitespace-nowrap">
-        {IconType()}{" "}
-        <h3 className="font-medium text-gray-900 overflow-ellipsis  line-clamp-1 md:line-clamp-2 max-w-[70%]">
+      <div className="flex gap-2 items-center w-[40%] not-md:w-[100%] whitespace-nowrap">
+        <div className="w-[5%]">{IconType()} </div>
+        <h3 className="font-medium text-gray-900 overflow-ellipsis  line-clamp-1 md:line-clamp-2 w-[95%]">
           {name}
           <div className="flex gap-2 text-sm md:hidden text-gray-500">
             <span>{size}</span>
-            <span>{createDate}</span>
+            <span>{createDate.toLocaleDateString("ru-RU")}</span>
           </div>
         </h3>
       </div>
-
       <div
-        className={`flex gap-2 ${
-          !status && "mx-auto"
-        } text-base not-md:hidden text-gray-500`}
+        className={`md:w-[60%] not-md:justify-end text-base ${
+          !status ? "mr-14" : "md:ml-28"
+        } flex justify-between`}
       >
-        <span>{type}</span>
-      </div>
-      <div
-        className={`flex gap-2 ${
-          !status && "mx-auto"
-        } text-base not-md:hidden text-gray-500`}
-      >
-        <span>{size}</span>|<span>{createDate}</span>
-      </div>
-      {status && (
-        <div className="flex gap-2 items-center relative ">
-          <BsThreeDots
-            onClick={(e) => {
-              e.stopPropagation();
-              setActionsOpen(!actionsOpen);
-            }}
-          />
-          {actionsOpen && (
-            <ActionsModal fileName={name} unmount={setActionsOpen} />
-          )}
+        <div
+          className={`flex not-md:hidden w-[10%] gap-2 ${
+            !status ? "mx-auto" : "mr-8"
+          } text-gray-500`}
+        >
+          <span>{type}</span>
         </div>
-      )}
+        <div
+          className={`flex not-md:hidden w-[60%] ${
+            status && "w-[%]"
+          } gap-20  text-gray-500`}
+        >
+          <span className={`w-[60px] not-md:hidden`}>{size}</span>
+          <span className="not-md:hidden">
+            {createDate.toLocaleDateString("ru-RU")}
+          </span>
+          {/* <span className="">{updateAt.toLocaleDateString("ru-RU")}</span> */}
+        </div>
+        {status && (
+          <div className="flex gap-2 items-center relative ">
+            <BsThreeDots
+              onClick={(e) => {
+                e.stopPropagation();
+                setActionsOpen(!actionsOpen);
+              }}
+            />
+            {actionsOpen && (
+              <ActionsModal
+                fileId={fileId}
+                token={fileToken}
+                fileName={name}
+                unmount={setActionsOpen}
+              />
+            )}
+          </div>
+        )}
+      </div>
     </div>
   );
 }

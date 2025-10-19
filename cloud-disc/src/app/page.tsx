@@ -1,68 +1,111 @@
 "use client";
 import { useUserStore } from "@/store/userStore";
-import Link from "next/link";
-import { useState } from "react";
+import { useRouter } from "next/navigation";
+import { useRef, useState } from "react";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
+
 export default function Home() {
-  const [passwordIsVisible, setPasswordIsVisible] = useState<boolean>(false);
+  const [passwordIsVisible, setPasswordIsVisible] = useState(false);
   const { setStatus } = useUserStore();
+  const router = useRouter();
+  const [loginRef, passwordRef] = [
+    useRef<HTMLInputElement | null>(null),
+    useRef<HTMLInputElement | null>(null),
+  ];
+
+  async function handleLogin(e: React.FormEvent) {
+    e.preventDefault();
+    const email = loginRef.current?.value;
+    const password = passwordRef.current?.value;
+
+    if (!email || !password) {
+      alert("Введите email и пароль");
+      return;
+    }
+
+    try {
+      const res = await fetch(
+        `${process.env.NEXT_PUBLIC_API_URL}/storage/api/v5/login/`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ email, password }),
+        }
+      );
+
+      const data = await res.json();
+
+      if (!res.ok) {
+        throw new Error(data.detail || data.message || "Ошибка входа");
+      }
+
+      localStorage.setItem("access", data.tokens.access);
+      localStorage.setItem("refresh", data.tokens.refresh);
+
+      console.log("Успешный вход:", data);
+      setStatus("authenticated");
+      router.push("/dashboard/1");
+    } catch (err) {
+      console.error("Ошибка входа:", err);
+      alert(err);
+    }
+  }
+
   return (
     <div className="w-dvw h-dvh flex justify-center font-semibold items-center">
       <form
+        onSubmit={handleLogin}
         className="w-[50%] flex flex-col gap-5 p-6 rounded-2xl max-w-[350px] min-w-[260px] shadow-2xl bg-gray-100"
-        action=""
       >
         <h1 className="text-center text-2xl">Вход на платформу</h1>
 
         <div className="px-2 flex flex-col gap-2">
-          <label htmlFor="password" className="block text-xl">
-            Логин
+          <label htmlFor="email" className="block text-xl">
+            Email
           </label>
           <input
-            type="text"
-            placeholder="Пример логина"
+            ref={loginRef}
+            type="email"
+            placeholder="user@example.com"
             id="email"
             className="outline-0 p-2 ring-1 rounded-xl w-full ring-gray-400 bg-white"
           />
         </div>
+
         <div className="px-2 flex flex-col gap-2">
           <label htmlFor="password" className="block text-xl">
             Пароль
           </label>
           <div className="p-2 ring-1 flex rounded-xl w-full ring-gray-400 bg-white">
             <input
-              type={`${!passwordIsVisible ? "password" : "text"}`}
-              placeholder="Пример пароль"
-              id="email"
+              ref={passwordRef}
+              type={passwordIsVisible ? "text" : "password"}
+              placeholder="securePassword123"
+              id="password"
               className="outline-0 w-[90%]"
             />
-            {!passwordIsVisible ? (
-              <FaEye
-                className="h-[100%] hover:cursor-pointer w-6"
-                onClick={() => {
-                  setPasswordIsVisible(!passwordIsVisible);
-                }}
+            {passwordIsVisible ? (
+              <FaEyeSlash
+                className="h-full w-6 hover:cursor-pointer"
+                onClick={() => setPasswordIsVisible(false)}
               />
             ) : (
-              <FaEyeSlash
-                className="h-[100%] hover:cursor-pointer w-6"
-                onClick={() => {
-                  setPasswordIsVisible(!passwordIsVisible);
-                }}
+              <FaEye
+                className="h-full w-6 hover:cursor-pointer"
+                onClick={() => setPasswordIsVisible(true)}
               />
             )}
           </div>
         </div>
-        <Link className="w-full" href={"/dashboard/1"}>
-          <button
-            onClick={() => {
-              setStatus("admin");
-            }}
-            className="p-3 px-6 rounded-2xl ring-1 w-full ring-[#50505053] bg-[#aeecfa32] hover:bg-[#dff5fa32] hover:cursor-pointer transition-all duration-300"
-          >
-            Вход
-          </button>
-        </Link>
+
+        <button
+          type="submit"
+          className="p-3 px-6 rounded-2xl ring-1 w-full ring-[#50505053] bg-[#aeecfa32] hover:bg-[#dff5fa32] hover:cursor-pointer transition-all duration-300"
+        >
+          Войти
+        </button>
       </form>
     </div>
   );

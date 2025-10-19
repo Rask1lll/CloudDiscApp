@@ -5,8 +5,10 @@ import { BiDownload } from "react-icons/bi";
 import { FaEdit, FaTrash } from "react-icons/fa";
 import ReNameModalDefault from "../modalPage/ReNameModalWindow";
 import DeleteModalWindow from "../modalPage/DeleteModalWindow";
+import ReNameFolderModalWindow from "../modalPage/ReNameFolderModalWindow";
+import DeleteFolderModalWindow from "../modalPage/DeleteFolderModalWindow";
 
-export default function ActionsModal({
+export default function FolderActionsModal({
   unmount,
   fileName,
   token,
@@ -57,14 +59,10 @@ export default function ActionsModal({
       }}
     >
       <ul className="decoration-0">
-        <li className="flex hover:bg-gray-50 border-b border-b-gray-200 p-2">
-          <BiDownload className="h-4 w-4 box-content p-1 hover:cursor-pointer text-gray-600" />
-          Скачать
-        </li>
         <li
           onClick={() => {
             setModalContent(
-              <ReNameModalDefault
+              <ReNameFolderModalWindow
                 fileName={fileName}
                 fileToken={token}
                 fileId={fileId}
@@ -80,7 +78,7 @@ export default function ActionsModal({
         <li
           onClick={() => {
             setModalContent(
-              <DeleteModalWindow fileName={fileName} fileId={fileId} />
+              <DeleteFolderModalWindow fileName={fileName} fileId={fileId} />
             );
             unmount(false);
           }}
