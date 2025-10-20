@@ -1,8 +1,8 @@
 "use client";
 import { useFileStore } from "@/store/fileStore";
-import File from "./File";
 import FilesHeader from "./FilesHeader";
 import Folder from "./Folder";
+import File from "./FileCompanent";
 
 export default function FilesDashboard() {
   const { files, searchingQuery, searchFiles } = useFileStore();
