@@ -1,7 +1,7 @@
 {
-  "/_not-found/page": "app/_not-found/page.js",
-  "/dashboard/[uuid]/page": "app/dashboard/[uuid]/page.js",
+  "/dashboard/folder/page": "app/dashboard/folder/page.js",
   "/dashboard/page": "app/dashboard/page.js",
   "/favicon.ico/route": "app/favicon.ico/route.js",
+  "/folder/page": "app/folder/page.js",
   "/page": "app/page.js"
 }

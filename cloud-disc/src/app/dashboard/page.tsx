@@ -1,6 +1,7 @@
 "use client";
 import FilesDashboard from "@/components/dashboard/FilesDashboard";
 import ListOptions from "@/components/listOptions/ListOptions";
+import MainListOptions from "@/components/listOptions/MainListOptions";
 import PageNotFound from "@/components/not-found/PageNotFound";
 import { useFileStore } from "@/store/fileStore";
 import { useEffect } from "react";
@@ -48,7 +49,7 @@ export default function DashboardPage() {
 
   return (
     <div className="h-full">
-      <ListOptions />
+      <MainListOptions />
       <FilesDashboard />
     </div>
   );

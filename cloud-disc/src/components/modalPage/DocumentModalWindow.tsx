@@ -1,9 +1,8 @@
 "use client";
-import Image from "next/image";
 import { useEffect, useState } from "react";
 import Loading from "../loading/Loading";
 
-export default function ImageFileModalWindow({
+export default function DocumentModalWindow({
   name,
   fileToken,
 }: {
@@ -13,27 +12,25 @@ export default function ImageFileModalWindow({
   const [link, setLink] = useState<string>();
   const [isLoading, setIsLoading] = useState<boolean>(true);
   useEffect(() => {
-    async function getPhoto() {
+    async function getDocument() {
       const token = localStorage.getItem("access");
       const res = await fetch(
         `${process.env.NEXT_PUBLIC_API_URL}/storage/api/v3/files/${fileToken}/`,
         {
-          method: "GET",
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
+          headers: { Authorization: `Bearer ${token}` },
         }
       );
-      if (!res.ok) {
-        return console.error(res.text);
-      }
-      const imageRes = await res.json();
-      console.log(imageRes);
-      setLink(imageRes.download_url);
+      const data = await res.json();
+
+      const fileRes = await fetch(data.download_url);
+      const blob = await fileRes.blob();
+      const url = URL.createObjectURL(blob);
+
+      setLink(url);
       setIsLoading(false);
     }
-    getPhoto();
-  }, []);
+    getDocument();
+  }, [fileToken]);
 
   return (
     <div className="bg-white rounded-xl  h-full">
@@ -42,17 +39,14 @@ export default function ImageFileModalWindow({
           {name}
         </h3>
       </div>
-      <div className=" flex p-5 px-20 flex-col items-center justify-center h-full space-y-6">
+      <div className=" flex p-5 flex-col items-center justify-center h-full space-y-6">
         {isLoading ? (
           <Loading />
         ) : (
-          <Image
-            src={link ? link : "/image.jpeg"}
-            height={400}
-            width={400}
-            alt="image"
-            className="not-sm:w-52"
-            unoptimized
+          <embed
+            src={link}
+            type="application/pdf"
+            className="not-sm:w-[900px] not-sm:h-[100%]"
           />
         )}
         <div className="text-center">

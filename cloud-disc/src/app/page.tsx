@@ -6,20 +6,22 @@ import { FaEye, FaEyeSlash } from "react-icons/fa";
 
 export default function Home() {
   const [passwordIsVisible, setPasswordIsVisible] = useState(false);
+  const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const { setStatus } = useUserStore();
   const router = useRouter();
-  const [loginRef, passwordRef] = [
-    useRef<HTMLInputElement | null>(null),
-    useRef<HTMLInputElement | null>(null),
-  ];
+
+  const loginRef = useRef<HTMLInputElement | null>(null);
+  const passwordRef = useRef<HTMLInputElement | null>(null);
 
   async function handleLogin(e: React.FormEvent) {
     e.preventDefault();
-    const email = loginRef.current?.value;
-    const password = passwordRef.current?.value;
+    setErrorMessage(null);
+
+    const email = loginRef.current?.value?.trim();
+    const password = passwordRef.current?.value?.trim();
 
     if (!email || !password) {
-      alert("Введите email и пароль");
+      setErrorMessage("Введите email и пароль");
       return;
     }
 
@@ -28,9 +30,7 @@ export default function Home() {
         `${process.env.NEXT_PUBLIC_API_URL}/storage/api/v5/login/`,
         {
           method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
+          headers: { "Content-Type": "application/json" },
           body: JSON.stringify({ email, password }),
         }
       );
@@ -38,18 +38,22 @@ export default function Home() {
       const data = await res.json();
 
       if (!res.ok) {
-        throw new Error(data.detail || data.message || "Ошибка входа");
+        const msg =
+          data.detail ||
+          data.message ||
+          data.non_field_errors?.[0] ||
+          "Ошибка входа";
+        throw new Error(msg);
       }
 
       localStorage.setItem("access", data.tokens.access);
       localStorage.setItem("refresh", data.tokens.refresh);
 
-      console.log("Успешный вход:", data);
       setStatus("authenticated");
-      router.push("/dashboard/1");
-    } catch (err) {
+      router.push("/dashboard");
+    } catch (err: any) {
       console.error("Ошибка входа:", err);
-      alert(err);
+      setErrorMessage(err.message || "Ошибка авторизации");
     }
   }
 
@@ -99,6 +103,12 @@ export default function Home() {
             )}
           </div>
         </div>
+
+        {errorMessage && (
+          <div className="text-red-600 text-center text-sm mt-[-5px]">
+            {errorMessage}
+          </div>
+        )}
 
         <button
           type="submit"

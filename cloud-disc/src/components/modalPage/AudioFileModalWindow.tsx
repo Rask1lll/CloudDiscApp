@@ -16,7 +16,7 @@ export default function AudioFileModalWindow({
   const [createdAt, setCreatedAt] = useState<string>("");
 
   useEffect(() => {
-    setFileUrl(""); // сбрасываем старый файл при новом открытии
+    setFileUrl("");
     setFileName("Загрузка...");
     setFileSize(null);
     setCreatedAt("");

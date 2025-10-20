@@ -15,6 +15,7 @@ import { useUserStore } from "@/store/userStore";
 import { IoImageOutline } from "react-icons/io5";
 import FileModalWindow from "../modalPage/FileModalWindow";
 import ImageFileModalWindow from "../modalPage/ImageFileModalWindow";
+import DocumentModalWindow from "../modalPage/DocumentModalWindow";
 
 export default function File({
   fileId,
@@ -41,7 +42,7 @@ export default function File({
     if (type.includes("video"))
       return <HiOutlineVideoCamera className="h-5 text-orange-400 w-5" />;
     switch (type) {
-      case "file":
+      case "document":
         return <AiOutlineFileText className="h-5 text-green-600 w-5" />;
       case "audio":
         return <AiOutlineAudio className="h-5 text-sky-600 w-5" />;
@@ -61,13 +62,14 @@ export default function File({
       case "audio":
         return <AudioFileModalWindow name={name} fileToken={fileToken} />;
       case "image":
-        return <ImageFileModalWindow name={name} link="" />;
+        return <ImageFileModalWindow name={name} fileToken={fileToken} />;
+      case "document":
+        return <DocumentModalWindow name={name} fileToken={fileToken} />;
       default:
         return <FileModalWindow name={name} type={type} />;
     }
   };
 
-  // функция для форматирования размера
   const formatSize = (bytes: number | string) => {
     const b = typeof bytes === "string" ? parseInt(bytes) : bytes;
     if (b < 1024) return b + " B";

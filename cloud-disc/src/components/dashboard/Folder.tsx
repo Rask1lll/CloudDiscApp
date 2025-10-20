@@ -24,7 +24,7 @@ export default function Folder({
   const { status } = useUserStore();
 
   return (
-    <Link href={`http://localhost:3000/dashboard/${fileToken}`}>
+    <Link href={`/folder?uuid=${encodeURIComponent(fileToken)}`}>
       <div className=" w-full hover:cursor-pointer hover:bg-gray-50 p-4 border-b border-gray-100 transition-all duration-500  flex items-center justify-between gap-3 ">
         <div className="flex gap-2 items-center w-[40%] not-md:w-[100%] whitespace-nowrap">
           <div className="w-[5%]">
