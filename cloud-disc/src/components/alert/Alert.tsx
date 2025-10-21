@@ -3,8 +3,10 @@ import { useAlertStore } from "@/store/alertStore";
 import { motion, MotionConfig, AnimatePresence } from "framer-motion";
 import { useEffect } from "react";
 
-export default function Alert() {
+export default function Alert({ color }: { color: string }) {
   const { alert, clearAlert } = useAlertStore();
+
+  const colorStyle = `bg-${color}-200`;
 
   useEffect(() => {
     if (!alert) return;
@@ -19,11 +21,11 @@ export default function Alert() {
           <MotionConfig>
             <motion.div
               key="alert"
-              initial={{ x: -100, opacity: 0.4 }}
-              animate={{ x: 0, opacity: 1 }}
-              exit={{ x: 100, opacity: 0 }}
-              transition={{ duration: 0.5, ease: "easeOut" }}
-              className="p-2 bg-[#7785ff67] font-semibold rounded-md text-gray-700"
+              initial={{ y: -100, opacity: 0.4 }}
+              animate={{ y: 0, opacity: 1 }}
+              exit={{ y: -100, opacity: 0 }}
+              transition={{ duration: 0.8, ease: "easeOut" }}
+              className={`p-2 ${color} font-semibold rounded-md text-gray-700`}
             >
               {alert}
             </motion.div>

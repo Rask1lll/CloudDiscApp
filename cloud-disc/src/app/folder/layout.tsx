@@ -9,7 +9,7 @@ export default function DashboardLayout({ children }: { children: ReactNode }) {
     <div>
       <ModalWindow />
       <div className="w-dvw h-dvh flex bg-gradient-to-br from-slate-100 to-blue-100 flex-col p-2 py-4  gap-2">
-        <Alert />
+        <Alert color="red" />
         <div className=" h-[10%]">
           <Header />
         </div>
