@@ -68,7 +68,7 @@ export default function File({
       ${
         status
           ? "grid-cols-[40px_2fr_1fr_1fr_1fr_100px] not-md:grid-cols-[40px_7fr_1fr_10px]"
-          : "grid-cols-[40px_2fr_1fr_1fr_1fr]"
+          : "grid-cols-[40px_2fr_1fr_1fr_1fr] not-md:grid-cols-[40px_1fr_10px]"
       }`}
     >
       <div>{IconType()}</div>

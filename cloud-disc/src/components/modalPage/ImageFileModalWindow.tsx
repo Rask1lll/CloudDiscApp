@@ -14,50 +14,27 @@ export default function ImageFileModalWindow({
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [isZoomed, setIsZoomed] = useState<boolean>(false);
   const [downloadUrl, setDownloadUrl] = useState<string>();
-  const [isAuthorized, setIsAuthorized] = useState<boolean>(true);
 
   useEffect(() => {
     async function getPhoto() {
       try {
         const token = localStorage.getItem("access");
-
-        if (!token) {
-          setIsAuthorized(false);
-          setIsLoading(false);
-          return;
-        }
-
         const res = await fetch(
-          `${process.env.NEXT_PUBLIC_API_URL}/storage/api/v3/files/${fileToken}/`,
-          {
-            method: "GET",
-            headers: {
-              Authorization: `Bearer ${token}`,
-            },
-          }
+          `${process.env.NEXT_PUBLIC_API_URL}/storage/api/v3/files/${fileToken}/`
         );
-
-        if (res.status === 401 || res.status === 403) {
-          setIsAuthorized(false);
-          setIsLoading(false);
-          return;
-        }
 
         if (!res.ok) {
           console.error(await res.text());
-          setIsAuthorized(false);
-          setIsLoading(false);
           return;
         }
 
         const imageRes = await res.json();
 
+        console.log(imageRes);
         setLink(imageRes.download_url);
         setDownloadUrl(imageRes.view_url);
-        setIsAuthorized(true);
       } catch (err) {
         console.error("Ошибка при получении изображения:", err);
-        setIsAuthorized(false);
       } finally {
         setIsLoading(false);
       }
@@ -94,7 +71,7 @@ export default function ImageFileModalWindow({
       <div className="flex flex-col items-center justify-center p-4 md:p-8 gap-6 h-[calc(100%-80px)]">
         {isLoading ? (
           <Loading />
-        ) : isAuthorized && link ? (
+        ) : (
           <>
             <div
               className="relative group w-full flex justify-center cursor-zoom-in"
@@ -119,14 +96,10 @@ export default function ImageFileModalWindow({
               </button>
             </div> */}
           </>
-        ) : (
-          <div className="flex items-center justify-center border-2 border-gray-300 rounded-lg w-full max-w-[600px] h-[400px] text-gray-500">
-            Изображение доступно только авторизованным пользователям
-          </div>
         )}
       </div>
 
-      {isZoomed && isAuthorized && (
+      {isZoomed && (
         <div
           className="fixed inset-0 bg-black bg-opacity-90 flex items-center justify-center z-50 cursor-zoom-out p-4"
           onClick={() => setIsZoomed(false)}

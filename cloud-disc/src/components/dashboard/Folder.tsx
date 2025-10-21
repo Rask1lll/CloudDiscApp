@@ -23,7 +23,7 @@ export default function Folder({
         ${
           status
             ? "grid-cols-[40px_2fr_1fr_1fr_1fr_100px] not-md:grid-cols-[40px_7fr_1fr_10px]"
-            : "grid-cols-[40px_2fr_1fr_1fr_1fr]"
+            : "grid-cols-[40px_2fr_1fr_1fr_1fr] not-md:grid-cols-[40px_1fr_10px]"
         }`}
       >
         <div>
@@ -37,18 +37,14 @@ export default function Folder({
           </div>
         </div>
 
-        {/* Тип */}
         <div className="hidden md:block text-gray-500">{type}</div>
 
-        {/* Размер */}
         <div className="hidden md:block text-gray-500">---</div>
 
-        {/* Дата создания */}
         <div className="hidden md:block text-gray-500">
           {new Date(createDate).toLocaleDateString("ru-RU")}
         </div>
 
-        {/* Действия */}
         {status && (
           <div className="relative flex justify-end md:justify-end md:pr-5">
             <BsThreeDots
