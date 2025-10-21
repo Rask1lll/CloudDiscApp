@@ -12,59 +12,113 @@ export default function ImageFileModalWindow({
 }) {
   const [link, setLink] = useState<string>();
   const [isLoading, setIsLoading] = useState<boolean>(true);
+  const [isZoomed, setIsZoomed] = useState<boolean>(false);
+  const [downloadUrl, setDownloadUrl] = useState<string>();
+
   useEffect(() => {
     async function getPhoto() {
-      const token = localStorage.getItem("access");
-      const res = await fetch(
-        `${process.env.NEXT_PUBLIC_API_URL}/storage/api/v3/files/${fileToken}/`,
-        {
-          method: "GET",
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
+      try {
+        const token = localStorage.getItem("access");
+        const res = await fetch(
+          `${process.env.NEXT_PUBLIC_API_URL}/storage/api/v3/files/${fileToken}/`,
+          {
+            method: "GET",
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
+
+        if (!res.ok) {
+          console.error(await res.text());
+          return;
         }
-      );
-      if (!res.ok) {
-        return console.error(res.text);
+
+        const imageRes = await res.json();
+
+        console.log(imageRes);
+        setLink(imageRes.download_url);
+        setDownloadUrl(imageRes.view_url);
+      } catch (err) {
+        console.error("Ошибка при получении изображения:", err);
+      } finally {
+        setIsLoading(false);
       }
-      const imageRes = await res.json();
-      console.log(imageRes);
-      setLink(imageRes.download_url);
-      setIsLoading(false);
     }
     getPhoto();
-  }, []);
+  }, [fileToken]);
+
+  const handleDownload = async () => {
+    if (!downloadUrl) return;
+    try {
+      const res = await fetch(downloadUrl);
+      const blob = await res.blob();
+      const url = window.URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = name;
+      document.body.appendChild(a);
+      a.click();
+      a.remove();
+      window.URL.revokeObjectURL(url);
+    } catch (err) {
+      console.error("Ошибка при скачивании файла:", err);
+    }
+  };
 
   return (
-    <div className="bg-white rounded-xl  h-full">
+    <div className="bg-white rounded-xl relative w-full h-full overflow-hidden">
       <div className="border-b border-gray-200">
-        <h3 className="font-semibold p-2 text-xl  text-gray-900 mb-2">
+        <h3 className="font-semibold p-2 text-xl text-gray-900 truncate pr-10">
           {name}
         </h3>
       </div>
-      <div className=" flex p-5 px-20 flex-col items-center justify-center h-full space-y-6">
+
+      <div className="flex flex-col items-center justify-center p-4 md:p-8 gap-6 h-[calc(100%-80px)]">
         {isLoading ? (
           <Loading />
         ) : (
-          <Image
-            src={link ? link : "/image.jpeg"}
-            height={400}
-            width={400}
-            alt="image"
-            className="not-sm:w-52"
-            unoptimized
-          />
-        )}
-        <div className="text-center">
-          <div className="space-y-3">
-            <div className="flex space-x-3 justify-center">
-              <button className="bg-gray-100 ring ring-gray-300 text-gray-700 px-6 py-2 rounded-lg font-medium hover:bg-blue-200 transition-colors">
+          <>
+            <div
+              className="relative group w-full flex justify-center cursor-zoom-in"
+              onClick={() => setIsZoomed(true)}
+            >
+              <Image
+                src={link || "/image.jpeg"}
+                alt={name}
+                width={600}
+                height={600}
+                unoptimized
+                className="max-h-[70vh] object-contain rounded-lg transition-transform duration-300 hover:scale-105"
+              />
+            </div>
+
+            <div className="flex justify-center">
+              <button
+                onClick={handleDownload}
+                className="bg-gray-100 ring ring-gray-300 text-gray-700 px-6 py-2 rounded-lg font-medium hover:bg-blue-200 transition-colors"
+              >
                 Скачать
               </button>
             </div>
-          </div>
-        </div>
+          </>
+        )}
       </div>
+
+      {isZoomed && (
+        <div
+          className="fixed inset-0 bg-black bg-opacity-90 flex items-center justify-center z-50 cursor-zoom-out p-4"
+          onClick={() => setIsZoomed(false)}
+        >
+          <Image
+            src={link || "/image.jpeg"}
+            alt={name}
+            fill
+            unoptimized
+            className="object-contain rounded-lg"
+          />
+        </div>
+      )}
     </div>
   );
 }

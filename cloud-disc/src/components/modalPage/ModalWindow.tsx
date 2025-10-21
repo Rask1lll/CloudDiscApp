@@ -21,7 +21,7 @@ export default function ModalWindow() {
     >
       <div className="relative z-10">
         <button
-          className="absolute z-100 right-3 top-3 cursor-pointer font-semibold text-xl"
+          className="absolute z-20 right-3 top-3 cursor-pointer font-semibold text-xl"
           onClick={() => {
             clearModalContent();
           }}

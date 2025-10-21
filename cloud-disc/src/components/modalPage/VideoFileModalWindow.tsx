@@ -15,7 +15,6 @@ export default function VideoFileModalWindow({
   const [createdAt, setCreatedAt] = useState<string>("");
 
   useEffect(() => {
-    // сброс состояния при повторном открытии
     setFileUrl("");
     setFileName("Загрузка...");
     setFileSize(null);
@@ -24,15 +23,10 @@ export default function VideoFileModalWindow({
     const fetchVideo = async () => {
       try {
         const API_URL = process.env.NEXT_PUBLIC_API_URL;
-        const accessToken = localStorage.getItem("access");
 
         const res = await fetch(
           `${API_URL}/storage/api/v3/files/${fileToken}/`,
-          {
-            headers: {
-              Authorization: `Bearer ${accessToken}`,
-            },
-          }
+          {}
         );
 
         if (!res.ok) throw new Error("Ошибка при получении видео");

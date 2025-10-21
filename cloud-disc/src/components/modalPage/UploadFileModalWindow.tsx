@@ -10,6 +10,7 @@ export default function UploadFileModalWindow() {
   const [allFilesToUpload, setAllFilesToUpload] = useState<File[]>([]);
   const [uploadProgress, setUploadProgress] = useState<number>(0);
   const [isUploading, setIsUploading] = useState<boolean>(false);
+  const [completedData, setCompletedData] = useState<any[]>([]);
 
   const inputRef = useRef<HTMLInputElement | null>(null);
   const { addFileArray, currentFolderUUID } = useFileStore();
@@ -52,7 +53,6 @@ export default function UploadFileModalWindow() {
     const token = localStorage.getItem("access");
     const API_URL = process.env.NEXT_PUBLIC_API_URL;
     const now = new Date();
-    let filetoken;
 
     if (!token) {
       alert("Вы не авторизованы!");
@@ -64,6 +64,9 @@ export default function UploadFileModalWindow() {
 
     let totalUploaded = 0;
     const totalFilesSize = allFilesToUpload.reduce((sum, f) => sum + f.size, 0);
+
+    // создаём локальный массив для completeData
+    const completed: any[] = [];
 
     for (const file of allFilesToUpload) {
       try {
@@ -86,7 +89,6 @@ export default function UploadFileModalWindow() {
 
         const initData = await initResp.json();
         const uploadId = initData.upload_id;
-        if (!uploadId) throw new Error("upload_id не получен от сервера");
 
         for (let i = 0; i < totalChunks; i++) {
           const start = i * CHUNK_SIZE;
@@ -107,10 +109,7 @@ export default function UploadFileModalWindow() {
             }
           );
 
-          if (!uploadResp.ok) {
-            const errText = await uploadResp.text();
-            throw new Error(`Ошибка при загрузке чанка ${i}: ${errText}`);
-          }
+          if (!uploadResp.ok) throw new Error("Ошибка при загрузке чанка");
 
           totalUploaded += chunk.size;
           setUploadProgress(Math.round((totalUploaded / totalFilesSize) * 100));
@@ -135,22 +134,29 @@ export default function UploadFileModalWindow() {
         if (!completeResp.ok) throw new Error("Ошибка завершения загрузки");
 
         const completeData = await completeResp.json();
-        console.log("✅ Файл успешно собран:", completeData);
+        completed.push(completeData);
       } catch (err) {
         console.error("Ошибка загрузки файла:", file.name, err);
       }
     }
 
-    const readyResult = allFilesToUpload.map((el) => ({
-      id: Date.now().toString() + Math.random().toString(36).slice(2),
-      name: el.name,
-      type: el.type,
-      size: `${(el.size / 1024 / 1024).toFixed(2)} MB`,
-      createAt: now,
-      updateAt: now,
-      parent: currentFolderUUID,
-      token: "",
-    }));
+    setCompletedData(completed);
+
+    const readyResult = completed.map((data) => {
+      const fileData = data.file;
+
+      return {
+        id: fileData.id,
+        name: fileData.name,
+        type: fileData.file_type,
+        size: fileData.size,
+        createAt: new Date(fileData.created_at),
+        updateAt: new Date(fileData.updated_at),
+        parent: fileData.folder_id || currentFolderUUID,
+        token: fileData.token,
+        url: `${API_URL}${fileData.file}`,
+      };
+    });
 
     addFileArray(readyResult);
     setUploadProgress(100);

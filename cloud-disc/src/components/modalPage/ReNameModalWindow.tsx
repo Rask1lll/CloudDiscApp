@@ -25,11 +25,9 @@ export default function ReNameModalDefault({
       return;
     }
 
-    // Получаем расширение исходного файла
     const extMatch = fileName.match(/\.[^\.]+$/);
     const extension = extMatch ? extMatch[0] : "";
 
-    // Если пользователь не написал расширение, добавляем старое
     if (extension && !newName.endsWith(extension)) {
       newName += extension;
     }
@@ -58,9 +56,6 @@ export default function ReNameModalDefault({
         const errText = await response.text();
         throw new Error(`Ошибка: ${errText}`);
       }
-
-      const data = await response.json();
-      console.log("✅ Файл переименован:", data);
 
       setFiles(
         files.map((f) => (f.id === fileId ? { ...f, name: newName } : f))

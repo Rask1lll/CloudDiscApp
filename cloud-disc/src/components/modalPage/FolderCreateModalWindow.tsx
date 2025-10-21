@@ -39,7 +39,7 @@ export default function FolderCreateModalWindow() {
       parent: null,
       updateAt: new Date(),
       createAt: new Date(),
-      id: folderName,
+      id: fullRes.id,
       size: "",
       token: fullRes.token,
     });

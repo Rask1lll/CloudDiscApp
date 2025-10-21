@@ -51,8 +51,6 @@ export default function ReNameFolderModalWindow({
         throw new Error(`Ошибка: ${errText}`);
       }
 
-      const data = await response.json();
-      console.log("✅ Папка переименована:", data);
       setFiles(
         files.map((f) => (f.id === fileId ? { ...f, name: newName } : f))
       );

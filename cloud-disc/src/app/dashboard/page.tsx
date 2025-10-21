@@ -1,15 +1,40 @@
 "use client";
 import FilesDashboard from "@/components/dashboard/FilesDashboard";
-import ListOptions from "@/components/listOptions/ListOptions";
 import MainListOptions from "@/components/listOptions/MainListOptions";
 import PageNotFound from "@/components/not-found/PageNotFound";
 import { useFileStore } from "@/store/fileStore";
 import { useEffect } from "react";
 
 export default function DashboardPage() {
-  const { setIsPageFound, setFiles } = useFileStore();
+  const { setIsPageFound, setFiles, isPageFound } = useFileStore();
 
   useEffect(() => {
+    const checkUser = async () => {
+      try {
+        const token = localStorage.getItem("access");
+        if (!token) {
+          setIsPageFound(false);
+          return;
+        }
+
+        const response = await fetch(
+          `${process.env.NEXT_PUBLIC_API_URL}/storage/api/v5/me/`,
+          {
+            headers: { Authorization: `Bearer ${token}` },
+          }
+        );
+
+        if (!response.ok) {
+          console.error("Не валидный токен");
+          return setIsPageFound(false);
+        }
+
+        const res = await response.json();
+        if (res) setIsPageFound(true);
+      } catch {
+        setIsPageFound(false);
+      }
+    };
     async function rootFiles() {
       const token = localStorage.getItem("access");
       const res = await fetch(
@@ -44,8 +69,13 @@ export default function DashboardPage() {
       setFiles(normalizedFolders);
     }
 
+    checkUser();
     rootFiles();
   }, [setFiles, setIsPageFound]);
+
+  if (!isPageFound) {
+    return <PageNotFound />;
+  }
 
   return (
     <div className="h-full">

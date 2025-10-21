@@ -39,36 +39,46 @@ export default function ActionsModal({
     };
   }, [mouseInComponent]);
 
-  const downloadFile = async () => {
+  const handleDownload = async () => {
     try {
       const API_URL = process.env.NEXT_PUBLIC_API_URL;
       const accessToken = localStorage.getItem("access");
 
       const res = await fetch(`${API_URL}/storage/api/v3/files/${token}/`, {
-        headers: { Authorization: `Bearer ${accessToken}` },
+        method: "GET",
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+        },
       });
 
-      if (!res.ok) throw new Error("Ошибка при получении файла");
+      if (!res.ok) {
+        console.error("Ошибка при получении файла");
+        return;
+      }
 
       const data = await res.json();
-      const url = data.download_url;
+      const fileUrl = data.view_url;
+      const fileNameFromApi = data.name || fileName;
 
-      // создаем ссылку для скачивания
-      const link = document.createElement("a");
-      link.href = url;
-      link.download = data.name; // имя файла из API
-      document.body.appendChild(link);
-      link.click();
-      document.body.removeChild(link);
+      const fileResponse = await fetch(fileUrl);
+      const blob = await fileResponse.blob();
+
+      const url = window.URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = fileNameFromApi;
+      document.body.appendChild(a);
+      a.click();
+      a.remove();
+      window.URL.revokeObjectURL(url);
     } catch (err) {
       console.error("Ошибка при скачивании файла:", err);
-      alert("Не удалось скачать файл");
     }
   };
 
   return (
     <div
-      className="absolute top-[150%] bg-white ring-1 z-10 rounded-md ring-gray-300 right-0"
+      className="absolute top-[150%] bg-white ring-1 z-10 rounded-md ring-gray-300 right-0 shadow-md"
       onMouseEnter={() => setMouseInComponent(true)}
       onMouseLeave={() => setMouseInComponent(false)}
       ref={modalRef}
@@ -77,12 +87,12 @@ export default function ActionsModal({
         e.stopPropagation();
       }}
     >
-      <ul className="decoration-0">
+      <ul className="decoration-0 min-w-[160px]">
         <li
-          onClick={downloadFile}
-          className="flex hover:bg-gray-50 border-b border-b-gray-200 p-2 cursor-pointer"
+          onClick={handleDownload}
+          className="flex items-center gap-2 hover:bg-gray-50 border-b border-b-gray-200 p-2 cursor-pointer"
         >
-          <BiDownload className="h-4 w-4 box-content p-1 text-gray-600" />
+          <BiDownload className="h-4 w-4 text-gray-600" />
           Скачать
         </li>
         <li
@@ -96,9 +106,9 @@ export default function ActionsModal({
             );
             unmount(false);
           }}
-          className="flex p-2 gap-1 hover:bg-gray-50 border-b border-b-gray-200 cursor-pointer"
+          className="flex items-center gap-2 p-2 hover:bg-gray-50 border-b border-b-gray-200 cursor-pointer"
         >
-          <FaEdit className="h-4 w-4 box-content p-1 text-gray-600" />
+          <FaEdit className="h-4 w-4 text-gray-600" />
           Переименовать
         </li>
         <li
@@ -108,9 +118,9 @@ export default function ActionsModal({
             );
             unmount(false);
           }}
-          className="flex hover:bg-gray-50 p-2 cursor-pointer"
+          className="flex items-center gap-2 hover:bg-gray-50 p-2 cursor-pointer"
         >
-          <FaTrash className="h-4 w-4 box-content p-1 text-gray-600" />
+          <FaTrash className="h-4 w-4 text-gray-600" />
           Удалить
         </li>
       </ul>
