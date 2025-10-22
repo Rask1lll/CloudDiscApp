@@ -11,6 +11,7 @@ import VideoFileModalWindow from "../modalPage/VideoFileModalWindow";
 import AudioFileModalWindow from "../modalPage/AudioFileModalWindow";
 import ImageFileModalWindow from "../modalPage/ImageFileModalWindow";
 import FileModalWindow from "../modalPage/FileModalWindow";
+import DocumentModalWindow from "../modalPage/DocumentModalWindow";
 
 export default function File({
   fileId,
@@ -56,6 +57,8 @@ export default function File({
         return <AudioFileModalWindow name={name} fileToken={fileToken} />;
       case "image":
         return <ImageFileModalWindow name={name} fileToken={fileToken} />;
+      case "document":
+        return <DocumentModalWindow name={name} fileToken={fileToken} />;
       default:
         return <FileModalWindow name={name} type={type} />;
     }

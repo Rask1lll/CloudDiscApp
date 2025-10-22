@@ -38,16 +38,13 @@ export default function DeleteModalWindow({
         const errorText = await response.text();
         throw new Error(`Ошибка удаления: ${errorText}`);
       }
-
-      const data = await response.json();
-      console.log("✅", data.message);
-      setAlert("Файл был удален");
+      setAlert({ label: "Файл был удален", color: "green" });
 
       setFiles(files.filter((f) => f.id !== fileId));
       clearModalContent();
     } catch (err) {
       console.error("Ошибка при удалении:", err);
-      alert("Не удалось удалить папку");
+      setAlert({ label: "Не удалось удалить Файл", color: "red" });
     } finally {
       setLoading(false);
     }

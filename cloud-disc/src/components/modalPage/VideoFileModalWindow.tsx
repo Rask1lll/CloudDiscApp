@@ -68,6 +68,7 @@ export default function VideoFileModalWindow({
               className="rounded-lg lg:w-[600px] lg:h-[300px] sm:w-[400px] sm:h-[200px] bg-black"
             >
               <source src={fileUrl} type="video/mp4" />
+              <source src={fileUrl} type="video/quicktime" />
               Ваш браузер не поддерживает видео.
             </video>
             <div className="text-sm text-gray-500">

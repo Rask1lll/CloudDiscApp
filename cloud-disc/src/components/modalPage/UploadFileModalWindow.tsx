@@ -1,4 +1,5 @@
 "use client";
+import { useAlertStore } from "@/store/alertStore";
 import { useFileStore } from "@/store/fileStore";
 import { useModalStore } from "@/store/modalStore";
 import { useRef, useState } from "react";
@@ -11,6 +12,7 @@ export default function UploadFileModalWindow() {
   const [uploadProgress, setUploadProgress] = useState<number>(0);
   const [isUploading, setIsUploading] = useState<boolean>(false);
   const [completedData, setCompletedData] = useState<any[]>([]);
+  const { setAlert } = useAlertStore();
 
   const inputRef = useRef<HTMLInputElement | null>(null);
   const { addFileArray, currentFolderUUID } = useFileStore();
@@ -22,11 +24,28 @@ export default function UploadFileModalWindow() {
     return existing.some((f) => f.name === file.name && f.size === file.size);
   };
 
+  const isAvailableForm = function (type: string): boolean {
+    if (
+      type == "application/pdf" ||
+      type == "audio/mpeg" ||
+      type == "video/mp4" ||
+      type == "image/jpeg" ||
+      type == "image/png"
+    ) {
+      return true;
+    }
+    return false;
+  };
+
   const addInputToFiles = (filesToAdd: FileList) => {
     let updatedFiles = [...allFilesToUpload];
 
     for (let i = 0; i < filesToAdd.length; i++) {
       const file = filesToAdd[i];
+      if (!isAvailableForm(file.type)) {
+        setAlert({ label: "Тип файла не поддерживается", color: "red" });
+        continue;
+      }
       if (!isDuplicate(file, updatedFiles)) {
         updatedFiles.push(file);
       }
@@ -52,7 +71,6 @@ export default function UploadFileModalWindow() {
     const CHUNK_SIZE = 10 * 1024 * 1024;
     const token = localStorage.getItem("access");
     const API_URL = process.env.NEXT_PUBLIC_API_URL;
-    const now = new Date();
 
     if (!token) {
       alert("Вы не авторизованы!");
@@ -65,7 +83,6 @@ export default function UploadFileModalWindow() {
     let totalUploaded = 0;
     const totalFilesSize = allFilesToUpload.reduce((sum, f) => sum + f.size, 0);
 
-    // создаём локальный массив для completeData
     const completed: any[] = [];
 
     for (const file of allFilesToUpload) {
@@ -135,8 +152,10 @@ export default function UploadFileModalWindow() {
 
         const completeData = await completeResp.json();
         completed.push(completeData);
+        setAlert({ label: "Загруженно", color: "green" });
       } catch (err) {
         console.error("Ошибка загрузки файла:", file.name, err);
+        setAlert({ label: "Ошибка загрузки файла", color: "red" });
       }
     }
 

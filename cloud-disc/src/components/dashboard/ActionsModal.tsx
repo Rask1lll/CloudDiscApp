@@ -45,32 +45,25 @@ export default function ActionsModal({
       const accessToken = localStorage.getItem("access");
 
       const res = await fetch(`${API_URL}/storage/api/v3/files/${token}/`, {
-        method: "GET",
         headers: {
           Authorization: `Bearer ${accessToken}`,
         },
       });
 
-      if (!res.ok) {
-        console.error("Ошибка при получении файла");
-        return;
-      }
+      if (!res.ok) throw new Error("Ошибка при получении информации о файле");
 
       const data = await res.json();
-      const fileUrl = data.view_url;
+      const fileUrl = data.download_url;
       const fileNameFromApi = data.name || fileName;
 
-      const fileResponse = await fetch(fileUrl);
-      const blob = await fileResponse.blob();
-
-      const url = window.URL.createObjectURL(blob);
       const a = document.createElement("a");
-      a.href = url;
+      a.href = fileUrl;
       a.download = fileNameFromApi;
+      a.target = "_blank";
       document.body.appendChild(a);
+
       a.click();
       a.remove();
-      window.URL.revokeObjectURL(url);
     } catch (err) {
       console.error("Ошибка при скачивании файла:", err);
     }

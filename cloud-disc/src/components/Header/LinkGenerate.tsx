@@ -4,10 +4,35 @@ import { BsShare } from "react-icons/bs";
 
 export default function LinkGenerate() {
   const { setAlert } = useAlertStore();
+
   async function copyLink() {
-    await navigator.clipboard.writeText(window.location.href);
-    setAlert("Ссылка была скопирована");
+    try {
+      const link = window.location.href;
+      if (
+        navigator &&
+        navigator.clipboard &&
+        typeof navigator.clipboard.writeText === "function"
+      ) {
+        await navigator.clipboard.writeText(link);
+      } else {
+        const input = document.createElement("input");
+        input.value = link;
+        document.body.appendChild(input);
+        input.select();
+        document.execCommand("copy");
+        document.body.removeChild(input);
+      }
+
+      setAlert({
+        label: "Сслыка скопирована",
+        color: "green",
+      });
+    } catch (err) {
+      console.error("Ошибка копирования ссылки:", err);
+      setAlert({ label: "Не удалось скопировать ссылку", color: "red" });
+    }
   }
+
   return (
     <div>
       <button
