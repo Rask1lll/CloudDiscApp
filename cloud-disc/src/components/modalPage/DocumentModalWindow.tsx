@@ -29,7 +29,7 @@ export default function DocumentModalWindow({
     getDocument();
   }, [fileToken]);
   return (
-    <div className="p-1">
+    <div className="p-1 w-[50vw] not-sm:w-[80vw]">
       <div className="bg-gray-100 p-2 rounded-xl border-b-2 w-full max-w-3xl mx-auto overflow-hidden shadow-lg">
         <p className="max-w-[80%] overflow-ellipsis line-clamp-2">{name}</p>
         {isLoading ? (

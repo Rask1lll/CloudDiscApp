@@ -4,7 +4,7 @@ import LinkGenerate from "./LinkGenerate";
 import QRGenerateBtn from "./QRGenerateBtn";
 import AdminBtn from "./AdminBtn";
 import { useFileStore } from "@/store/fileStore";
-import Breadcrumbs from "@/uiDetails/Breadcrumbs";
+import Breadcrumbs from "@/components/uiDetails/Breadcrumbs";
 
 export default function Header() {
   const { isPageFound } = useFileStore();
@@ -14,7 +14,7 @@ export default function Header() {
   }
   return (
     <>
-      <header className="w-full flex h-full justify-between">
+      <header className="w-full flex h-[70%] justify-between">
         <div className="">
           <Logo />
         </div>
@@ -24,7 +24,9 @@ export default function Header() {
           <AdminBtn />
         </div>
       </header>
-      <Breadcrumbs />
+      <div className="h-[30%]">
+        <Breadcrumbs />
+      </div>
     </>
   );
 }

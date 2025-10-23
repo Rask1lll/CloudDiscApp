@@ -10,10 +10,10 @@ export default function DashboardLayout({ children }: { children: ReactNode }) {
       <ModalWindow />
       <div className="w-dvw h-dvh flex bg-gradient-to-br from-slate-100 to-blue-100 flex-col p-2 py-4  gap-2">
         <Alert />
-        <div className=" h-[10%]">
+        <div className=" h-[15%]">
           <Header />
         </div>
-        <div className="h-[90%]">
+        <div className="h-[85%]">
           <AuthProvider>{children}</AuthProvider>
         </div>
       </div>

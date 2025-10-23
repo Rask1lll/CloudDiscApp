@@ -37,6 +37,8 @@ interface fileStore {
   setCurrentFolderUUID: (link: string) => void;
   isPageFound: boolean;
   setIsPageFound: (b: boolean) => void;
+  currentFolderName: string;
+  setCurrentFolderName: (name: string) => void;
 }
 
 const sort = function (
@@ -73,6 +75,8 @@ export const useFileStore = create<fileStore>((set, get) => ({
   setCurrentFolder: (link: string) => set({ currentFolder: link }),
   currentFolderUUID: "",
   setCurrentFolderUUID: (link: string) => set({ currentFolderUUID: link }),
+  currentFolderName: "",
+  setCurrentFolderName: (name: string) => set({ currentFolderName: name }),
   files: [],
   searchingQuery: "",
   setSearchingQuery: (s: string) => set({ searchingQuery: s }),

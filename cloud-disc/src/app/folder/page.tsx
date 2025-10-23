@@ -12,7 +12,12 @@ function DashboardContent() {
   const [pageFound, setPageFound] = useState<boolean>(true);
   const searchParams = useSearchParams();
   const uuid = searchParams.get("uuid");
-  const { setCurrentFolderUUID, setIsPageFound, setFiles } = useFileStore();
+  const {
+    setCurrentFolderUUID,
+    setIsPageFound,
+    setCurrentFolderName,
+    setFiles,
+  } = useFileStore();
 
   useEffect(() => {
     if (!uuid) {
@@ -36,7 +41,9 @@ function DashboardContent() {
 
         const reqResult = await res.json();
         setCurrentFolderUUID(String(reqResult.folder.id));
+        setCurrentFolderName(String(reqResult.folder.name));
         setPageFound(true);
+        console.log(reqResult);
 
         const normalizedFolders = reqResult.subfolders.map((f: any) => ({
           id: f.id,

@@ -43,7 +43,7 @@ export default function UploadFileModalWindow() {
     for (let i = 0; i < filesToAdd.length; i++) {
       const file = filesToAdd[i];
       if (!isAvailableForm(file.type)) {
-        setAlert({ label: "Тип файла не поддерживается", color: "red" });
+        setAlert({ label: "Не верный формат данных", color: "red" });
         continue;
       }
       if (!isDuplicate(file, updatedFiles)) {

@@ -13,7 +13,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "My drive app",
+  title: "Cloud disk",
   description: "Application for uploading files and share with it",
 };
 

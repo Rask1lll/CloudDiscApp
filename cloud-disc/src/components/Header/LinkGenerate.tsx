@@ -24,7 +24,7 @@ export default function LinkGenerate() {
       }
 
       setAlert({
-        label: "Сслыка скопирована",
+        label: "Ссылка была скопирована",
         color: "green",
       });
     } catch (err) {

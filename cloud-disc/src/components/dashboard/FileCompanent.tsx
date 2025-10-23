@@ -77,7 +77,9 @@ export default function File({
       <div>{IconType()}</div>
 
       <div className="truncate text-gray-900 font-medium flex flex-col">
-        <span>{name}</span>
+        <span className="overflow-hidden text-ellipsis max-w-[97%]">
+          {name}
+        </span>
         <div className="flex md:hidden text-sm text-gray-500 gap-2 mt-1">
           <span>{formatSize(size)}</span>
           <span>{new Date(createDate).toLocaleDateString("ru-RU")}</span>

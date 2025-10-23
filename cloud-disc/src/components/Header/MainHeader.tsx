@@ -1,10 +1,8 @@
 "use client";
 import Logo from "./Logo";
-import LinkGenerate from "./LinkGenerate";
 import QRGenerateBtn from "./QRGenerateBtn";
 import AdminBtn from "./AdminBtn";
 import { useFileStore } from "@/store/fileStore";
-import Breadcrumbs from "@/uiDetails/Breadcrumbs";
 
 export default function MainHeader() {
   const { isPageFound } = useFileStore();
