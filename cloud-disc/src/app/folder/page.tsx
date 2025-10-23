@@ -7,6 +7,7 @@ import FilesDashboard from "@/components/dashboard/FilesDashboard";
 import ListOptions from "@/components/listOptions/ListOptions";
 import PageNotFound from "@/components/not-found/PageNotFound";
 import { useFileStore } from "@/store/fileStore";
+import { useUserStore } from "@/store/userStore";
 
 function DashboardContent() {
   const [pageFound, setPageFound] = useState<boolean>(true);
@@ -78,8 +79,12 @@ function DashboardContent() {
     getFileFromServer();
   }, [uuid]);
 
+  const { status } = useUserStore();
+
+  const layout = status ? "h-[88%]" : "h-[93%]";
+
   return (
-    <div className="h-full">
+    <div className={`${layout}`}>
       {pageFound ? (
         <div className="h-full">
           <ListOptions />
@@ -94,7 +99,7 @@ function DashboardContent() {
 
 export default function DashboardPage() {
   return (
-    <Suspense fallback={<div>Loading dashboard...</div>}>
+    <Suspense fallback={<div>Загрузка страницы...</div>}>
       <DashboardContent />
     </Suspense>
   );
