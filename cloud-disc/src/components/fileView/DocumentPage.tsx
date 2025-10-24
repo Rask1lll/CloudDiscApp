@@ -85,7 +85,6 @@ export default function DocumentPage({ fileToken }: { fileToken: string }) {
                     transformOrigin: "center top",
                     border: "none",
                   }}
-                  sandbox="allow-same-origin allow-scripts"
                 />
               </div>
             )
