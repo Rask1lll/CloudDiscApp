@@ -1,9 +1,4 @@
 {
-  "/(user interface)/file/page": "app/(user interface)/file/page.js",
   "/(user interface)/folder/page": "app/(user interface)/folder/page.js",
-  "/_not-found/page": "app/_not-found/page.js",
-  "/dashboard/page": "app/dashboard/page.js",
-  "/favicon.ico/route": "app/favicon.ico/route.js",
-  "/file/page": "app/file/page.js",
-  "/page": "app/page.js"
+  "/favicon.ico/route": "app/favicon.ico/route.js"
 }
