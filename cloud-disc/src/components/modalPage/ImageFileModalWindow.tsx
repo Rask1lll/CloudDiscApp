@@ -2,6 +2,9 @@
 import Image from "next/image";
 import { useEffect, useState } from "react";
 import Loading from "../loading/Loading";
+import { BiQr } from "react-icons/bi";
+import MakeQr from "../qr/MakeQr";
+import { MdOutlineImage } from "react-icons/md";
 
 export default function ImageFileModalWindow({
   name,
@@ -14,6 +17,7 @@ export default function ImageFileModalWindow({
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [isZoomed, setIsZoomed] = useState<boolean>(false);
   const [downloadUrl, setDownloadUrl] = useState<string>();
+  const [showQr, setShowQr] = useState<boolean>(false);
 
   useEffect(() => {
     async function getPhoto() {
@@ -42,11 +46,20 @@ export default function ImageFileModalWindow({
     getPhoto();
   }, [fileToken]);
   return (
-    <div className="bg-white rounded-xl relative w-full h-full overflow-hidden">
-      <div className="border-b border-gray-200">
-        <h3 className="font-semibold p-2 text-xl text-gray-900 truncate pr-10">
+    <div className="bg-white rounded-xl relative not-sm:w-[350px] pt-10 h-full overflow-hidden">
+      <div className="border-b flex border-gray-200">
+        <h3 className="font-semibold p-2 flex text-xl text-gray-900 items-center gap-2 truncate pr-10">
+          <MdOutlineImage className="w-5 h-5 text-blue-500" />
           {name}
         </h3>
+        <div className="w-[10%] ml-auto flex items-center">
+          <BiQr
+            onClick={() => {
+              setShowQr(!showQr);
+            }}
+            className="w-5 h-5 cursor-pointer "
+          />
+        </div>
       </div>
 
       <div className="flex flex-col items-center justify-center p-4 md:p-8 gap-6 h-[calc(100%-80px)]">
@@ -54,31 +67,30 @@ export default function ImageFileModalWindow({
           <Loading />
         ) : (
           <>
-            <div
-              className="relative group w-full flex justify-center cursor-zoom-in"
-              onClick={() => setIsZoomed(true)}
-            >
-              <Image
-                onContextMenu={(e) => {
-                  e.preventDefault();
-                }}
-                src={link || "/image.jpeg"}
-                alt={name}
-                width={600}
-                height={600}
-                unoptimized
-                className="max-h-[70vh] object-contain rounded-lg transition-transform duration-300 hover:scale-105"
-              />
-            </div>
-
-            {/* <div className="flex justify-center">
-              <button
-                onClick={handleDownload}
-                className="bg-gray-100 ring ring-gray-300 text-gray-700 px-6 py-2 rounded-lg font-medium hover:bg-blue-200 transition-colors"
-              >
-                Скачать
-              </button>
-            </div> */}
+            <>
+              {showQr ? (
+                <MakeQr
+                  link={`${process.env.NEXT_PUBLIC_PORT_URL}/file?link=${fileToken}&type=image`}
+                />
+              ) : (
+                <div
+                  className="relative group w-full flex justify-center cursor-zoom-in"
+                  onClick={() => setIsZoomed(true)}
+                >
+                  <Image
+                    onContextMenu={(e) => {
+                      e.preventDefault();
+                    }}
+                    src={link || "/image.jpeg"}
+                    alt={name}
+                    width={600}
+                    height={600}
+                    unoptimized
+                    className="max-h-[70vh] object-contain rounded-lg transition-transform duration-300 hover:scale-105"
+                  />
+                </div>
+              )}
+            </>
           </>
         )}
       </div>

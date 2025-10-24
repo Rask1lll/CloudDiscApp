@@ -3,14 +3,12 @@
 import { AiOutlineAudio } from "react-icons/ai";
 import { useEffect, useState } from "react";
 import { BiQr } from "react-icons/bi";
-import Qr from "../qr/Qr";
+import MakeQr from "../qr/MakeQr";
 
 export default function AudioFileModalWindow({
-  name,
   fileToken,
 }: {
   fileToken: string;
-  name: string;
 }) {
   const [fileName, setFileName] = useState<string>("Загрузка...");
   const [fileUrl, setFileUrl] = useState<string>("");
@@ -77,7 +75,9 @@ export default function AudioFileModalWindow({
         {fileUrl ? (
           <>
             {showQr ? (
-              <Qr token={fileToken} />
+              <MakeQr
+                link={`${process.env.NEXT_PUBLIC_PORT_URL}/file?link=${fileToken}&type=audio`}
+              />
             ) : (
               <>
                 <audio

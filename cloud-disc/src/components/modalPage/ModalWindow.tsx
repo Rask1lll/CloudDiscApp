@@ -13,15 +13,10 @@ export default function ModalWindow() {
     <div
       ref={modalRef}
       className="absolute w-dvw h-full flex justify-center bg-[#7e7d7d6b] items-center"
-      onClick={(e) => {
-        // if (e.target === modalRef.current) {
-        //   clearModalContent();
-        // }
-      }}
     >
       <div className="relative z-10">
         <button
-          className="absolute z-20 right-3 top-3 cursor-pointer font-semibold text-xl"
+          className="absolute z-20 right-2 top-2 cursor-pointer font-semibold text-xl"
           onClick={() => {
             clearModalContent();
           }}

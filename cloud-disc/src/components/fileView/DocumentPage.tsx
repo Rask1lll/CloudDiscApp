@@ -6,13 +6,8 @@ import Loading from "../loading/Loading";
 import { BiQr } from "react-icons/bi";
 import MakeQr from "../qr/MakeQr";
 
-export default function DocumentModalWindow({
-  name,
-  fileToken,
-}: {
-  name: string;
-  fileToken: string;
-}) {
+export default function DocumentPage({ fileToken }: { fileToken: string }) {
+  const [fileName, setFileName] = useState<string>("Загрузка...");
   const [link, setLink] = useState<string>();
   const [isLoading, setIsLoading] = useState(true);
   const containerRef = useRef<HTMLDivElement>(null);
@@ -30,6 +25,7 @@ export default function DocumentModalWindow({
         );
         const data = await res.json();
         setLink(data.download_url);
+        setFileName(data.name);
       } catch (e) {
         console.error("Error fetching document:", e);
       } finally {
@@ -130,61 +126,53 @@ export default function DocumentModalWindow({
   }, [showQr, link, renderPdf]);
 
   return (
-    <div
-      className="p-1 w-[50vw] max-sm:w-[80vw]"
-      onContextMenu={(e) => e.preventDefault()}
-    >
-      <div className="bg-gray-100 pt-10 p-2 rounded-xl border-b-2 w-full max-w-3xl mx-auto overflow-hidden shadow-lg">
-        <div className="flex items-center justify-between gap-2 mb-2">
-          <p className="max-w-[70%] overflow-ellipsis line-clamp-2">{name}</p>
-          <div className="flex items-center gap-2">
-            <button
-              className="px-2 py-1 rounded border"
-              onClick={() => setZoom((z) => Math.max(0.5, z / 1.1))}
-              title="Уменьшить"
-            >
-              −
-            </button>
-            <span className="min-w-[60px] text-center">
-              {Math.round(zoom * 100)}%
-            </span>
-            <button
-              className="px-2 py-1 rounded border"
-              onClick={() => setZoom((z) => Math.min(5, z * 1.1))}
-              title="Увеличить"
-            >
-              +
-            </button>
-            <div className="w-[20%]">
-              <BiQr
-                onClick={() => {
-                  setShowQr(!showQr);
-                }}
-                className="w-5 h-5 cursor-pointer "
-              />
+    <div className="w-dvw h-dvh bg-blue-100 flex justify-center items-center">
+      <div
+        className="p-1 w-[50vw] max-sm:w-[80vw]"
+        onContextMenu={(e) => e.preventDefault()}
+      >
+        <div className="bg-gray-100 pt-10 p-2 rounded-xl border-b-2 w-full max-w-3xl mx-auto overflow-hidden shadow-lg">
+          <div className="flex items-center justify-between gap-2 mb-2">
+            <p className="max-w-[70%] overflow-ellipsis line-clamp-2">
+              {fileName}
+            </p>
+            <div className="flex items-center gap-2">
+              <button
+                className="px-2 py-1 rounded border"
+                onClick={() => setZoom((z) => Math.max(0.5, z / 1.1))}
+                title="Уменьшить"
+              >
+                −
+              </button>
+              <span className="min-w-[60px] text-center">
+                {Math.round(zoom * 100)}%
+              </span>
+              <button
+                className="px-2 py-1 rounded border"
+                onClick={() => setZoom((z) => Math.min(5, z * 1.1))}
+                title="Увеличить"
+              >
+                +
+              </button>
             </div>
           </div>
-        </div>
 
-        {isLoading ? (
-          <div className="flex items-center justify-center h-[70vh]">
-            <Loading />
-          </div>
-        ) : (
-          <>
-            {showQr ? (
-              <MakeQr
-                link={`${process.env.NEXT_PUBLIC_PORT_URL}/file?link=${fileToken}&type=document`}
-              />
-            ) : (
-              <div
-                ref={containerRef}
-                className="overflow-auto w-full h-[70vh] sm:h-[75vh] md:h-[80vh] rounded-lg"
-                style={{ background: "#f8f8f8", padding: 12 }}
-              />
-            )}
-          </>
-        )}
+          {isLoading ? (
+            <div className="flex items-center justify-center h-[70vh]">
+              <Loading />
+            </div>
+          ) : (
+            <>
+              {
+                <div
+                  ref={containerRef}
+                  className="overflow-auto w-full h-[70vh] sm:h-[75vh] md:h-[80vh] rounded-lg"
+                  style={{ background: "#f8f8f8", padding: 12 }}
+                />
+              }
+            </>
+          )}
+        </div>
       </div>
     </div>
   );
