@@ -63,6 +63,9 @@ export default function VideoFileModalWindow({
           <>
             <video
               key={fileUrl}
+              onContextMenu={(e) => {
+                e.preventDefault();
+              }}
               controls
               controlsList="nodownload"
               className="rounded-lg lg:w-[600px] lg:h-[300px] sm:w-[400px] sm:h-[200px] bg-black"

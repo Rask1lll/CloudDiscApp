@@ -2,6 +2,8 @@
 
 import { AiOutlineAudio } from "react-icons/ai";
 import { useEffect, useState } from "react";
+import { BiQr } from "react-icons/bi";
+import Qr from "../qr/Qr";
 
 export default function AudioFileModalWindow({
   name,
@@ -14,6 +16,7 @@ export default function AudioFileModalWindow({
   const [fileUrl, setFileUrl] = useState<string>("");
   const [fileSize, setFileSize] = useState<number | null>(null);
   const [createdAt, setCreatedAt] = useState<string>("");
+  const [showQr, setShowQr] = useState<boolean>(false);
 
   useEffect(() => {
     setFileUrl("");
@@ -55,27 +58,48 @@ export default function AudioFileModalWindow({
   };
 
   return (
-    <div className="rounded-xl bg-white">
-      <div className="border-b border-gray-300 px-2 gap-2 flex items-center py-5">
-        <AiOutlineAudio className="w-5 h-5 text-sky-400" /> {fileName}
+    <div className="rounded-xl bg-white pt-2">
+      <div className="border-b border-gray-300 flex  py-3 ">
+        <div className="w-[80%] flex gap-2">
+          <AiOutlineAudio className="w-5 h-5 text-sky-400" /> {fileName}
+        </div>
+        <div className="w-[20%]">
+          <BiQr
+            onClick={() => {
+              setShowQr(!showQr);
+            }}
+            className="w-5 h-5 cursor-pointer "
+          />
+        </div>
       </div>
 
       <div className="p-4 flex flex-col gap-3">
         {fileUrl ? (
           <>
-            <audio
-              key={fileUrl}
-              controlsList="nodownload"
-              src={fileUrl}
-              controls
-              className="w-80"
-            >
-              Ваш браузер не поддерживает воспроизведение аудио
-            </audio>
-            <div className="text-sm text-gray-500">
-              Размер: {formatSize(fileSize)}
-            </div>
-            <div className="text-sm text-gray-500">Загрузка: {createdAt}</div>
+            {showQr ? (
+              <Qr token={fileToken} />
+            ) : (
+              <>
+                <audio
+                  key={fileUrl}
+                  controlsList="nodownload"
+                  src={fileUrl}
+                  controls
+                  className="w-80"
+                  onContextMenu={(e) => {
+                    e.preventDefault();
+                  }}
+                >
+                  Ваш браузер не поддерживает воспроизведение аудио
+                </audio>
+                <div className="text-sm text-gray-500">
+                  Размер: {formatSize(fileSize)}
+                </div>
+                <div className="text-sm text-gray-500">
+                  Загрузка: {createdAt}
+                </div>
+              </>
+            )}
           </>
         ) : (
           <div className="text-gray-500">Загрузка аудио...</div>

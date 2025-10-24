@@ -41,25 +41,6 @@ export default function ImageFileModalWindow({
     }
     getPhoto();
   }, [fileToken]);
-
-  const handleDownload = async () => {
-    if (!downloadUrl) return;
-    try {
-      const res = await fetch(downloadUrl);
-      const blob = await res.blob();
-      const url = window.URL.createObjectURL(blob);
-      const a = document.createElement("a");
-      a.href = url;
-      a.download = name;
-      document.body.appendChild(a);
-      a.click();
-      a.remove();
-      window.URL.revokeObjectURL(url);
-    } catch (err) {
-      console.error("Ошибка при скачивании файла:", err);
-    }
-  };
-
   return (
     <div className="bg-white rounded-xl relative w-full h-full overflow-hidden">
       <div className="border-b border-gray-200">
@@ -78,6 +59,9 @@ export default function ImageFileModalWindow({
               onClick={() => setIsZoomed(true)}
             >
               <Image
+                onContextMenu={(e) => {
+                  e.preventDefault();
+                }}
                 src={link || "/image.jpeg"}
                 alt={name}
                 width={600}
