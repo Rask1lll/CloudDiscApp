@@ -3,6 +3,7 @@ import { HiOutlineVideoCamera } from "react-icons/hi";
 import { useEffect, useState } from "react";
 import MakeQr from "../qr/MakeQr";
 import { BiQr } from "react-icons/bi";
+import { useUserStore } from "@/store/userStore";
 
 export default function VideoFileModalWindow({
   name,
@@ -55,6 +56,7 @@ export default function VideoFileModalWindow({
     const mb = size / (1024 * 1024);
     return `${mb.toFixed(2)} MB`;
   };
+  const { status } = useUserStore();
 
   return (
     <div className="rounded-2xl m-2 bg-white shadow-lg ring-1 ring-gray-200 pt-8 overflow-hidden">
@@ -63,12 +65,14 @@ export default function VideoFileModalWindow({
           <HiOutlineVideoCamera className="w-5 h-5 text-orange-500 shrink-0" />
           <span className="truncate">{fileName}</span>
         </div>
-        <div
-          onClick={() => setShowQr(!showQr)}
-          className="rounded-lg p-2 hover:bg-gray-100 transition cursor-pointer ring-1 ring-gray-300"
-        >
-          <BiQr className="w-5 h-5 text-gray-600" />
-        </div>
+        {status && (
+          <div
+            onClick={() => setShowQr(!showQr)}
+            className="rounded-lg p-2 hover:bg-gray-100 transition cursor-pointer ring-1 ring-gray-300"
+          >
+            <BiQr className="w-5 h-5 text-gray-600" />
+          </div>
+        )}
       </div>
 
       <div className="p-6 flex flex-col items-center gap-4">

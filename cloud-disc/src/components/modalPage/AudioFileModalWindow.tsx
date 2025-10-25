@@ -4,6 +4,7 @@ import { AiOutlineAudio } from "react-icons/ai";
 import { useEffect, useState } from "react";
 import { BiQr } from "react-icons/bi";
 import MakeQr from "../qr/MakeQr";
+import { useUserStore } from "@/store/userStore";
 
 export default function AudioFileModalWindow({
   fileToken,
@@ -15,6 +16,7 @@ export default function AudioFileModalWindow({
   const [fileSize, setFileSize] = useState<number | null>(null);
   const [createdAt, setCreatedAt] = useState<string>("");
   const [showQr, setShowQr] = useState<boolean>(false);
+  const { status } = useUserStore();
 
   useEffect(() => {
     setFileUrl("");
@@ -56,19 +58,21 @@ export default function AudioFileModalWindow({
   };
 
   return (
-    <div className="rounded-xl bg-white pt-2">
-      <div className="border-b border-gray-300 flex  py-3 ">
-        <div className="w-[80%] flex gap-2">
+    <div className="rounded-xl bg-white pt-10">
+      <div className="border-b border-gray-300 flex  py-3 p-4 ">
+        <div className="w-[80%] flex gap-2 items-center">
           <AiOutlineAudio className="w-5 h-5 text-sky-400" /> {fileName}
         </div>
-        <div className="w-[20%]">
-          <BiQr
-            onClick={() => {
-              setShowQr(!showQr);
-            }}
-            className="w-5 h-5 cursor-pointer "
-          />
-        </div>
+        {status && (
+          <div className="w-[10%]">
+            <div
+              onClick={() => setShowQr(!showQr)}
+              className="rounded-lg w-fit p-2 hover:bg-gray-100 transition cursor-pointer ring-1 ring-gray-300"
+            >
+              <BiQr className="w-5 h-5 text-gray-600" />
+            </div>
+          </div>
+        )}
       </div>
 
       <div className="p-4 flex flex-col gap-3">

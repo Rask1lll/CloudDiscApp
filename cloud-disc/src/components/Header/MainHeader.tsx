@@ -1,6 +1,5 @@
 "use client";
 import Logo from "./Logo";
-import QRGenerateBtn from "./QRGenerateBtn";
 import AdminBtn from "./AdminBtn";
 import { useFileStore } from "@/store/fileStore";
 
@@ -16,7 +15,6 @@ export default function MainHeader() {
         <Logo />
       </div>
       <div className="flex static gap-5">
-        <QRGenerateBtn />
         <AdminBtn />
       </div>
     </header>

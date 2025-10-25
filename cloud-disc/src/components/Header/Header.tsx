@@ -24,9 +24,13 @@ export default function Header() {
             <Logo />
           </div>
           <div className="flex static gap-5">
-            <LinkGenerate />
-            <QRGenerateBtn />
-            <AdminBtn />
+            {status && (
+              <>
+                <LinkGenerate />
+                <QRGenerateBtn />
+                <AdminBtn />
+              </>
+            )}
           </div>
         </div>
         <div className="mt-3">{status && <Breadcrumbs />}</div>

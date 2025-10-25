@@ -5,6 +5,7 @@ import Loading from "../loading/Loading";
 import { BiQr } from "react-icons/bi";
 import MakeQr from "../qr/MakeQr";
 import { MdOutlineImage } from "react-icons/md";
+import { useUserStore } from "@/store/userStore";
 
 export default function ImageFileModalWindow({
   name,
@@ -45,20 +46,24 @@ export default function ImageFileModalWindow({
     }
     getPhoto();
   }, [fileToken]);
+
+  const { status } = useUserStore();
   return (
     <div className="bg-white rounded-xl relative not-sm:w-[350px] pt-10 h-full overflow-hidden">
-      <div className="border-b flex border-gray-200">
+      <div className="border-b flex border-gray-200 px-4">
         <h3 className="font-semibold p-2 flex text-xl text-gray-900 items-center gap-2 truncate pr-10">
           <MdOutlineImage className="w-5 h-5 text-blue-500" />
           {name}
         </h3>
         <div className="w-[10%] ml-auto flex items-center">
-          <BiQr
-            onClick={() => {
-              setShowQr(!showQr);
-            }}
-            className="w-5 h-5 cursor-pointer "
-          />
+          {status && (
+            <div
+              onClick={() => setShowQr(!showQr)}
+              className="rounded-lg p-2 hover:bg-gray-100 transition cursor-pointer ring-1 ring-gray-300"
+            >
+              <BiQr className="w-5 h-5 text-gray-600" />
+            </div>
+          )}
         </div>
       </div>
 

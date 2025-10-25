@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import Loading from "../loading/Loading";
 import { BiQr } from "react-icons/bi";
 import MakeQr from "../qr/MakeQr";
+import { useUserStore } from "@/store/userStore";
 
 export default function DocumentModalWindow({
   name,
@@ -32,6 +33,8 @@ export default function DocumentModalWindow({
     })();
   }, [fileToken]);
 
+  const { status } = useUserStore();
+
   return (
     <div
       className="p-1 w-[50vw] max-sm:w-[80vw]"
@@ -58,10 +61,14 @@ export default function DocumentModalWindow({
             >
               +
             </button>
-            <BiQr
-              onClick={() => setShowQr(!showQr)}
-              className="w-5 h-5 cursor-pointer"
-            />
+            {status && (
+              <div
+                onClick={() => setShowQr(!showQr)}
+                className="rounded-lg p-2 hover:bg-gray-100 transition cursor-pointer ring-1 ring-gray-300"
+              >
+                <BiQr className="w-5 h-5 text-gray-600" />
+              </div>
+            )}
           </div>
         </div>
 
