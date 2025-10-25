@@ -59,7 +59,7 @@ export default function VideoFileModalWindow({
   const { status } = useUserStore();
 
   return (
-    <div className="rounded-2xl m-2 bg-white shadow-lg ring-1 ring-gray-200 pt-8 overflow-hidden">
+    <div className="rounded-2xl m-2 bg-white shadow-lg w-[calc(100dvw-40px)] ring-1 ring-gray-200 pt-8 overflow-hidden">
       <div className="flex items-center justify-between px-6 py-4 border-b border-gray-100 bg-gray-50">
         <div className="flex items-center gap-2 text-gray-800 font-medium truncate">
           <HiOutlineVideoCamera className="w-5 h-5 text-orange-500 shrink-0" />
@@ -96,7 +96,7 @@ export default function VideoFileModalWindow({
                   }}
                   controls
                   controlsList="nodownload"
-                  className="rounded-xl w-full max-w-[600px] bg-black object-cover"
+                  className="rounded-xl w-full max-w-[600px] not-md:max-w-[300px] not-sm:max-w-[200px] bg-black object-cover"
                 >
                   <source src={fileUrl} type="video/mp4" />
                   <source src={fileUrl} type="video/quicktime" />
