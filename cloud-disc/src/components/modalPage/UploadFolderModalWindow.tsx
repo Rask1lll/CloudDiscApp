@@ -80,6 +80,7 @@ export default function UploadFolderModalWindow() {
 
     setIsUploading(true);
     setUploadProgress(0);
+    console.log(currentFolderUUID);
 
     try {
       const rootRes = await fetch(`${API_URL}/storage/api/v3/folders/`, {

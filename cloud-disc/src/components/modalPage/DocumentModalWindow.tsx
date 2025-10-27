@@ -70,6 +70,9 @@ export default function DocumentModalWindow({
             {pages.length > 0 ? (
               pages.map((url, index) => (
                 <img
+                  onContextMenu={(e) => {
+                    e.preventDefault();
+                  }}
                   key={index}
                   src={url}
                   alt={`Page ${index + 1}`}

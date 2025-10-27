@@ -7,6 +7,8 @@ import {
   AiOutlineUpload,
   AiOutlineCheckCircle,
 } from "react-icons/ai";
+import Loading from "../loading/Loading";
+import { useModalStore } from "@/store/modalStore";
 
 export default function FileReplaceModalWindow({
   fileName,
@@ -21,8 +23,10 @@ export default function FileReplaceModalWindow({
   const [isUploading, setIsUploading] = useState(false);
   const [uploadProgress, setUploadProgress] = useState(0);
   const fileInputRef = useRef<HTMLInputElement | null>(null);
+  const [loading, setLoading] = useState<boolean>(false);
   const { files, setFiles } = useFileStore();
   const { setAlert } = useAlertStore();
+  const { clearModalContent } = useModalStore();
 
   const handleFileSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files.length > 0) {
@@ -55,6 +59,7 @@ export default function FileReplaceModalWindow({
     formData.append("file", selectedFile);
     const token = localStorage.getItem("access");
     try {
+      setLoading(true);
       const res = await fetch(
         `${process.env.NEXT_PUBLIC_API_URL}/storage/api/v3/files_replace/${fileId}/`,
         {
@@ -67,16 +72,36 @@ export default function FileReplaceModalWindow({
       );
 
       const reRes = await res.json();
+      console.log(reRes);
+
+      const replaceUi = files.map((el) => {
+        if (el.id == fileId) {
+          el.name = reRes.name;
+          el.type = reRes.file_type;
+          return el;
+        }
+        return el;
+      });
+      setFiles(replaceUi);
+      setLoading(false);
+      clearModalContent();
     } catch (e) {
+      setLoading(false);
       setAlert({ label: "Ошибка при замене файла", color: "red" });
     }
   }
 
   return (
-    <div className="bg-white rounded-2xl shadow-lg w-full max-w-lg p-8">
+    <div className="bg-white relative rounded-2xl shadow-lg w-full max-w-lg p-8">
       <h1 className="text-2xl font-bold text-gray-800 mb-6 text-center">
         Замена файла
       </h1>
+
+      {loading && (
+        <div className="absolute flex w-full h-[80%] top-b left-0 justify-center items-center backdrop-blur-[2px]">
+          <Loading />
+        </div>
+      )}
 
       {!isUploading ? (
         <>

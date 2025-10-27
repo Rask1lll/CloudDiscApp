@@ -6,7 +6,8 @@ import { useFileStore } from "@/store/fileStore";
 import { useEffect } from "react";
 
 export default function DashboardPage() {
-  const { setIsPageFound, setFiles, isPageFound } = useFileStore();
+  const { setIsPageFound, setFiles, isPageFound, setCurrentFolderUUID } =
+    useFileStore();
 
   useEffect(() => {
     const checkUser = async () => {
@@ -30,6 +31,7 @@ export default function DashboardPage() {
         }
 
         const res = await response.json();
+        setCurrentFolderUUID("");
         if (res) setIsPageFound(true);
       } catch {
         setIsPageFound(false);

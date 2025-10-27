@@ -1,4 +1,5 @@
 "use client";
+import Loading from "@/components/loading/Loading";
 import { useUserStore } from "@/store/userStore";
 import { useRouter } from "next/navigation";
 import { useRef, useState } from "react";
@@ -8,6 +9,7 @@ export default function Home() {
   const [passwordIsVisible, setPasswordIsVisible] = useState(false);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const { setStatus } = useUserStore();
+  const [loading, setLoading] = useState<boolean>(false);
   const router = useRouter();
 
   const loginRef = useRef<HTMLInputElement | null>(null);
@@ -26,6 +28,7 @@ export default function Home() {
     }
 
     try {
+      setLoading(true);
       const res = await fetch(
         `${process.env.NEXT_PUBLIC_API_URL}/storage/api/v5/login/`,
         {
@@ -43,6 +46,7 @@ export default function Home() {
           data.message ||
           data.non_field_errors?.[0] ||
           "Ошибка входа";
+        setLoading(false);
         throw new Error(msg);
       }
 
@@ -52,6 +56,7 @@ export default function Home() {
       setStatus("authenticated");
       router.push("/dashboard");
     } catch (err: any) {
+      setLoading(false);
       console.error("Ошибка входа:", err);
       setErrorMessage(err.message || "Ошибка авторизации");
     }
@@ -112,9 +117,9 @@ export default function Home() {
 
         <button
           type="submit"
-          className="p-3 px-6 rounded-2xl ring-1 w-full ring-[#50505053] bg-[#aeecfa32] hover:bg-[#dff5fa32] hover:cursor-pointer transition-all duration-300"
+          className="p-3 px-6 flex items-center justify-center rounded-2xl ring-1 w-full ring-[#50505053] bg-[#aeecfa32] hover:bg-[#dff5fa32] hover:cursor-pointer transition-all duration-300"
         >
-          Войти
+          {loading ? <Loading /> : <span>Войти</span>}
         </button>
       </form>
     </div>
