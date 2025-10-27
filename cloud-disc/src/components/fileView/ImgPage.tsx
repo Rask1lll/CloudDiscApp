@@ -28,8 +28,6 @@ export default function ImagePage({ fileToken }: { fileToken: string }) {
         }
 
         const imageRes = await res.json();
-
-        console.log(imageRes);
         setLink(imageRes.download_url);
         setDownloadUrl(imageRes.view_url);
         setFileName(imageRes.name);

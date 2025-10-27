@@ -22,8 +22,6 @@ export default function VideoPlayer({ token }: { token: string }) {
 
         const res = await fetch(`${API_URL}/storage/api/v3/files/${token}/`);
 
-        console.log(res);
-
         if (!res.ok) throw new Error("Ошибка при получении видео");
 
         const data = await res.json();

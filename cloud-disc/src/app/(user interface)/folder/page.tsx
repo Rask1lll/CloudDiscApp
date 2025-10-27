@@ -44,7 +44,6 @@ function DashboardContent() {
         setCurrentFolderUUID(String(reqResult.folder.id));
         setCurrentFolderName(String(reqResult.folder.name));
         setPageFound(true);
-        console.log(reqResult);
 
         const normalizedFolders = reqResult.subfolders.map((f: any) => ({
           id: f.id,

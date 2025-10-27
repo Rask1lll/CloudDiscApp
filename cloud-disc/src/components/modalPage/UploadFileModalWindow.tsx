@@ -18,7 +18,7 @@ export default function UploadFileModalWindow() {
   const { addFileArray, currentFolderUUID } = useFileStore();
   const { clearModalContent } = useModalStore();
 
-  const MAX_FILES = 5;
+  const MAX_FILES = 10;
 
   const isDuplicate = (file: File, existing: File[]) => {
     return existing.some((f) => f.name === file.name && f.size === file.size);

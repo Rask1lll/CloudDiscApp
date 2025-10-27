@@ -1,6 +1,6 @@
 import { create } from "zustand";
 
-interface file {
+export interface file {
   id: string;
   name: string;
   type: string;

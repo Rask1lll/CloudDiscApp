@@ -35,7 +35,6 @@ export default function ImageFileModalWindow({
 
         const imageRes = await res.json();
 
-        console.log(imageRes);
         setLink(imageRes.download_url);
         setDownloadUrl(imageRes.view_url);
       } catch (err) {
@@ -45,7 +44,7 @@ export default function ImageFileModalWindow({
       }
     }
     getPhoto();
-  }, [fileToken]);
+  }, []);
 
   const { status } = useUserStore();
   return (

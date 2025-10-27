@@ -38,7 +38,6 @@ export default function DeleteFolderModalWindow({
       }
 
       const data = await response.json();
-      console.log("✅", data.message);
       alert(data.message || "Папка успешно удалена");
 
       setFiles(files.filter((f) => f.id !== fileId));

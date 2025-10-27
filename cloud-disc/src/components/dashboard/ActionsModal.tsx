@@ -1,10 +1,13 @@
 "use client";
 import { useModalStore } from "@/store/modalStore";
 import { useEffect, useRef, useState } from "react";
-import { BiDownload } from "react-icons/bi";
+import { BiDownload, BiMove } from "react-icons/bi";
 import { FaEdit, FaTrash } from "react-icons/fa";
 import ReNameModalDefault from "../modalPage/ReNameModalWindow";
 import DeleteModalWindow from "../modalPage/DeleteModalWindow";
+import MoveFileModal from "../modalPage/MoveFileModalWindow";
+import { LuReplace } from "react-icons/lu";
+import FileReplaceModalWindow from "../modalPage/FileReplaceModalWindow";
 
 export default function ActionsModal({
   unmount,
@@ -103,6 +106,34 @@ export default function ActionsModal({
         >
           <FaEdit className="h-4 w-4 text-gray-600" />
           Переименовать
+        </li>
+        <li
+          onClick={() => {
+            setModalContent(
+              <MoveFileModal fileName={fileName} fileId={fileId} />
+            );
+            unmount(false);
+          }}
+          className="flex items-center gap-2 hover:bg-gray-50 border-b border-b-gray-200 p-2 cursor-pointer"
+        >
+          <BiMove className="h-4 w-4 text-gray-600" />
+          Переместить
+        </li>
+        <li
+          onClick={() => {
+            setModalContent(
+              <FileReplaceModalWindow
+                fileToken={token}
+                fileName={fileName}
+                fileId={fileId}
+              />
+            );
+            unmount(false);
+          }}
+          className="flex items-center gap-2 hover:bg-gray-50 p-2 border-b border-b-gray-200 cursor-pointer"
+        >
+          <LuReplace className="h-4 w-4 text-gray-600" />
+          Заменить
         </li>
         <li
           onClick={() => {

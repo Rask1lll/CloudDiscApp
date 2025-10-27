@@ -3,11 +3,12 @@ import { useFileStore } from "@/store/fileStore";
 import { useModalStore } from "@/store/modalStore";
 import { useRef } from "react";
 import { BiFolderPlus } from "react-icons/bi";
+import UploadFolderModalWindow from "./UploadFolderModalWindow";
 
 export default function FolderCreateModalWindow() {
   const inputRef = useRef<null | HTMLInputElement>(null);
   const { addFile, currentFolderUUID } = useFileStore();
-  const { clearModalContent } = useModalStore();
+  const { clearModalContent, setModalContent } = useModalStore();
 
   async function createFolder() {
     const folderName = inputRef.current?.value;
@@ -73,8 +74,14 @@ export default function FolderCreateModalWindow() {
           </div>
 
           <div className="flex space-x-3 pt-2">
-            <button className="flex-1 px-6 py-3 bg-red-100 text-gray-700 rounded-xl font-medium hover:bg-red-200 pointer transition-all">
-              Отмена
+            <button
+              onClick={() => {
+                clearModalContent();
+                setModalContent(<UploadFolderModalWindow />);
+              }}
+              className="flex-1 px-6 py-3 bg-green-100 text-gray-700 rounded-xl font-medium hover:bg-green-200 pointer transition-all"
+            >
+              Загрузить
             </button>
             <button
               onClick={createFolder}

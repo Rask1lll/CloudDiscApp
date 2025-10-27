@@ -53,7 +53,6 @@ export default function DashboardPage() {
       }
 
       const result = await res.json();
-      console.log("Ответ сервера:", result);
 
       const normalizedFolders = result.map((folder: any) => ({
         id: folder.id,

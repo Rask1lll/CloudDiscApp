@@ -11,7 +11,6 @@ export default function FilePage() {
   const params = useSearchParams();
   const token = params.get("link");
   const type = params.get("type");
-  console.log(token);
 
   switch (type) {
     case "video":

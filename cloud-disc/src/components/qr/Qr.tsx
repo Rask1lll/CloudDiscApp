@@ -10,14 +10,12 @@ export default function Qr({ token }: { token: string }) {
         const res = await fetch(
           `${process.env.NEXT_PUBLIC_API_URL}/storage/api/v3/qr/${token}/`
         );
-        console.log(res.url);
         setQrLink(res.url);
       } catch (e) {
         console.error(e);
       }
     }
     getQr();
-    console.log("start");
   }, []);
 
   return (
