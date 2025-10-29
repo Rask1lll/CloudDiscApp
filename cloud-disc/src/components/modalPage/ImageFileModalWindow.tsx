@@ -6,6 +6,7 @@ import { BiQr } from "react-icons/bi";
 import MakeQr from "../qr/MakeQr";
 import { MdOutlineImage } from "react-icons/md";
 import { useUserStore } from "@/store/userStore";
+import MakeLink from "../qr/MakeLink";
 
 export default function ImageFileModalWindow({
   name,
@@ -48,19 +49,29 @@ export default function ImageFileModalWindow({
 
   const { status } = useUserStore();
   return (
-    <div className="bg-white rounded-xl relative not-sm:w-[350px] pt-10 h-full overflow-hidden">
+    <div className="bg-white rounded-xl relative not-sm:w-[350px] max-w-[calc(100dvw-100px)] pt-10 h-full overflow-hidden">
       <div className="border-b flex border-gray-200 px-4">
         <h3 className="font-semibold p-2 flex text-xl text-gray-900 items-center gap-2 truncate pr-10">
-          <MdOutlineImage className="w-5 h-5 text-blue-500" />
-          {name}
+          <div className="w-[40px]">
+            <MdOutlineImage className="w-5 h-5 text-blue-500" />
+          </div>
+          <div className="w-[90%] overflow-ellipsis text-nowrap">{name}</div>
         </h3>
-        <div className="w-[10%] ml-auto flex items-center">
+        <div className="w-min-[10%] ml-auto flex items-center">
           {status && (
-            <div
-              onClick={() => setShowQr(!showQr)}
-              className="rounded-lg p-2 hover:bg-gray-100 transition cursor-pointer ring-1 ring-gray-300"
-            >
-              <BiQr className="w-5 h-5 text-gray-600" />
+            <div className="flex gap-2">
+              <div>
+                <MakeLink
+                  link={`${process.env.NEXT_PUBLIC_PORT_URL}/file?link=${fileToken}&type=image`}
+                />
+              </div>
+
+              <div
+                onClick={() => setShowQr(!showQr)}
+                className="rounded-lg p-2 hover:bg-gray-100 transition cursor-pointer ring-1 ring-gray-300"
+              >
+                <BiQr className="w-5 h-5 text-gray-600" />
+              </div>
             </div>
           )}
         </div>

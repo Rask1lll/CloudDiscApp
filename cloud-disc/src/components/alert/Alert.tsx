@@ -26,7 +26,7 @@ export default function Alert() {
   }, [alert, clearAlert]);
 
   return (
-    <div className="absolute w-full  flex top-14 justify-center">
+    <div className="absolute w-full z-50 flex top-14 justify-center">
       <AnimatePresence>
         {alert.alert && (
           <MotionConfig>

@@ -9,21 +9,23 @@ export default function MakeQr({ link }: { link: string }) {
 
     const svg = qrRef.current;
     const svgData = new XMLSerializer().serializeToString(svg);
-    const canvas = document.createElement("canvas");
-    const img = new Image();
-
     const svgBlob = new Blob([svgData], {
       type: "image/svg+xml;charset=utf-8",
     });
     const url = URL.createObjectURL(svgBlob);
 
+    const img = new Image();
+    const canvas = document.createElement("canvas");
+    const scale = 4;
+
     img.onload = () => {
-      canvas.width = svg.clientWidth;
-      canvas.height = svg.clientHeight;
+      canvas.width = svg.clientWidth * scale;
+      canvas.height = svg.clientHeight * scale;
 
       const ctx = canvas.getContext("2d");
       if (!ctx) return;
 
+      ctx.scale(scale, scale);
       ctx.drawImage(img, 0, 0);
       URL.revokeObjectURL(url);
 
@@ -42,10 +44,11 @@ export default function MakeQr({ link }: { link: string }) {
       <QRCodeSVG
         ref={qrRef}
         value={link}
-        size={200}
+        size={300}
         fgColor="#000000"
         bgColor="#ffffff"
-        level="H"
+        level="M"
+        includeMargin={true}
       />
       <button
         onClick={handleDownload}
