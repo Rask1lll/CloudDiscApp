@@ -26,7 +26,6 @@ export default function DashboardPage() {
         );
 
         if (!response.ok) {
-          console.error("Не валидный токен");
           return setIsPageFound(false);
         }
 

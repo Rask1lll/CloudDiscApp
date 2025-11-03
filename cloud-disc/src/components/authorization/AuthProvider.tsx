@@ -23,7 +23,6 @@ export default function AuthProvider({
         );
 
         if (!response.ok) {
-          console.error("Не валидный токен");
           return setStatus(null);
         }
 

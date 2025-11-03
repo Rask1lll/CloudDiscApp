@@ -73,7 +73,6 @@ export default function VideoFileModalWindow({
                 link={`${process.env.NEXT_PUBLIC_PORT_URL}/file?link=${fileToken}&type=video`}
               />
             </div>
-
             <div
               onClick={() => setShowQr(!showQr)}
               className="rounded-lg p-2 hover:bg-gray-100 transition cursor-pointer ring-1 ring-gray-300"
