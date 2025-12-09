@@ -54,7 +54,7 @@ export default function File({
       return <VideoFileModalWindow name={name} fileToken={fileToken} />;
     switch (type) {
       case "audio":
-        return <AudioFileModalWindow name={name} fileToken={fileToken} />;
+        return <AudioFileModalWindow fileToken={fileToken} />;
       case "image":
         return <ImageFileModalWindow name={name} fileToken={fileToken} />;
       case "document":

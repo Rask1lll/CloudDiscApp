@@ -1,5 +1,6 @@
 "use client";
 
+import { Suspense } from "react";
 import VideoPlayer from "@/components/fileView/VideoPlayer";
 import { useSearchParams } from "next/navigation";
 import NotFound from "../not-found";
@@ -7,7 +8,7 @@ import AudioPage from "@/components/fileView/AudioPage";
 import DocumentPage from "@/components/fileView/DocumentPage";
 import ImagePage from "@/components/fileView/ImgPage";
 
-export default function FilePage() {
+function FileContent() {
   const params = useSearchParams();
   const token = params.get("link");
   const type = params.get("type");
@@ -24,4 +25,12 @@ export default function FilePage() {
     default:
       return <NotFound />;
   }
+}
+
+export default function FilePage() {
+  return (
+    <Suspense fallback={<div>Loading...</div>}>
+      <FileContent />
+    </Suspense>
+  );
 }

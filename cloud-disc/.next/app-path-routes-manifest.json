@@ -1,7 +1,8 @@
 {
+  "/(user interface)/folder/page": "/folder",
   "/_not-found/page": "/_not-found",
   "/dashboard/page": "/dashboard",
   "/favicon.ico/route": "/favicon.ico",
-  "/folder/page": "/folder",
+  "/file/page": "/file",
   "/page": "/"
 }
